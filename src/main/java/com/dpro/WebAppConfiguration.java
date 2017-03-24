@@ -9,8 +9,6 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.dpro")
@@ -27,7 +25,7 @@ public class WebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean(name = "dataSource")
-    public DataSource getDataSource() {
+    public DriverManagerDataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/dpro");

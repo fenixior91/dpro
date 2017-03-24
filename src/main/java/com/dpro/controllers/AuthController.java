@@ -19,12 +19,13 @@ public class AuthController {
         String role = auth.getAuthorities().toString();
 
         String targetUrl = "";
+        System.out.println(role);
         if(role.contains("ADMIN")) {
-            targetUrl = "/admin";
+            targetUrl = "/admin/";
         } else if(role.contains("INSTRUCTOR")) {
-            targetUrl = "/instructor";
+            targetUrl = "/instructor/";
         } else if (role.contains("STUDENT")){
-            targetUrl = "/student";
+            targetUrl = "/student/";
         }
 
         return "redirect:" + targetUrl;
