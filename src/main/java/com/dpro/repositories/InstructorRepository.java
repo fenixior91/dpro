@@ -7,14 +7,21 @@ import java.util.Date;
 import java.util.List;
 
 public interface InstructorRepository {
-    Instructor findById(Long id);
-    Instructor findByPesel(String pesel);
-    Instructor findByEmail(String email);
+	Instructor findById(Long id);
 
-    List<Instructor> findAll();
-    List<Instructor> findAllByFirstName(String firstName);
-    List<Instructor> findAllByLastName(String lastName);
-    List<Instructor> findAllByDateOfBirth(Date dateOfBirth);
-    List<Instructor> findAllByEnabled(boolean enabled);
-    List<Instructor> findByScienceDegree(String scienceDegree);
+	Instructor findByPesel(String pesel);
+
+	Instructor findByEmail(String email);
+
+	List<Instructor> findAll();
+
+	List<Instructor> findAllByFirstName(String firstName);
+
+	List<Instructor> findAllByLastName(String lastName);
+
+	List<Instructor> findAllByDateOfBirth(Date dateOfBirth);
+
+	List<Instructor> findAllByEnabled(boolean enabled);
+
+	List<Instructor> findByScienceDegree(String scienceDegree);
 }

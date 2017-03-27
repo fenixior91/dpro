@@ -14,32 +14,27 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Import(WebAppConfiguration.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    DriverManagerDataSource dataSource;
+	@Autowired
+	DriverManagerDataSource dataSource;
 
-    @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery(
-                        "select username, password, enabled from user where username=?")
-                .authoritiesByUsernameQuery(
-                        "select username, role from role where username=?");
+	@Autowired
+	CustomSuccessHandler customSuccessHandler;
 
-        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
-    }
+	@Autowired
+	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().dataSource(dataSource)
+				.usersByUsernameQuery("select username, password, enabled from user where username=?")
+				.authoritiesByUsernameQuery("select username, role from role where username=?");
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                .antMatchers("/instructor/**").access("hasRole('INSTRUCTOR')")
-                .antMatchers("/student**").hasRole("STUDENT")
-                .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/login_success").failureUrl("/login?error")
-                .usernameParameter("username").passwordParameter("password")
-                .and()
-                .exceptionHandling().accessDeniedPage("/403");
-    }
+		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/instructor/**").hasRole("INSTRUCTOR").antMatchers("/student/**").hasRole("STUDENT").and()
+				.formLogin().loginPage("/login").successHandler(customSuccessHandler).failureUrl("/login?error")
+				.usernameParameter("username").passwordParameter("password").and().csrf().and().exceptionHandling()
+				.accessDeniedPage("/403");
+	}
 }

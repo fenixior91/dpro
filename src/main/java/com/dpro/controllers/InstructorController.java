@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class InstructorController {
-    @RequestMapping(value = "/instructor", method = RequestMethod.GET)
-    public String index() {
-        return "instructor";
-    }
+	@RequestMapping(value = "/instructor", method = RequestMethod.GET)
+	public String index() {
+		return "instructor";
+	}
 }
