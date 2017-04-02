@@ -5,7 +5,7 @@
 	<head>
 	    <meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <title>Admin | Dashboard</title>
+	    <title>Studenci</title>
 	    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	    <%@include file="css-include.jsp" %>
 	</head>
@@ -16,7 +16,7 @@
 			
 			<div class="content-wrapper">
 		        <section class="content-header">
-		            <h1>Profil</h1>
+		            <h1>Studenci</h1>
 		        </section>
 		
 		        <section class="content">

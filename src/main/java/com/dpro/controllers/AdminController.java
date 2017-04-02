@@ -11,4 +11,9 @@ public class AdminController {
 	public String index() {
 		return "admin";
 	}
+	
+	@RequestMapping(value = "/students", method = RequestMethod.GET)
+	public String students() {
+		return "students";
+	}
 }
