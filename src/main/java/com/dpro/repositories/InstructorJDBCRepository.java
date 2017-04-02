@@ -1,7 +1,6 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Instructor;
-import com.dpro.domains.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;

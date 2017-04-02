@@ -1,7 +1,6 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Student;
-import com.dpro.domains.User;
 
 import java.util.Date;
 import java.util.List;

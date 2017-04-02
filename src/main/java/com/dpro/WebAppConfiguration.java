@@ -1,8 +1,10 @@
 package com.dpro;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -13,6 +15,9 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.dpro")
 public class WebAppConfiguration extends WebMvcConfigurerAdapter {
+	
+	@Autowired
+	private Environment environment;
 
 	@Bean
 	public ViewResolver viewResolver() {
@@ -29,8 +34,8 @@ public class WebAppConfiguration extends WebMvcConfigurerAdapter {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/dpro");
-		dataSource.setUsername("root");
-		dataSource.setPassword("");
+		dataSource.setUsername(environment.getProperty("database.user"));
+		dataSource.setPassword(environment.getProperty("database.password"));
 
 		return dataSource;
 	}

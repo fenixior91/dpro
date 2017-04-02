@@ -1,7 +1,6 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Student;
-import com.dpro.domains.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
