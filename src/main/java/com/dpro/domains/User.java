@@ -1,11 +1,10 @@
 package com.dpro.domains;
 
 import java.util.Date;
-import java.util.List;
 
 public class User {
 	private long id;
-	private String pesel;
+	private String username;
 	private String password;
 	private boolean enabled;
 	private String email;
@@ -13,14 +12,12 @@ public class User {
 	private String lastName;
 	private Date dateOfBirth;
 
-	private List<Address> addresses;
-
 	public long getId() {
 		return id;
 	}
 
-	public String getPesel() {
-		return pesel;
+	public String getUsername() {
+		return username;
 	}
 
 	public String getPassword() {
@@ -47,16 +44,12 @@ public class User {
 		return dateOfBirth;
 	}
 
-	public List<Address> getAddresses() {
-		return addresses;
-	}
-
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	public void setPesel(String pesel) {
-		this.pesel = pesel;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public void setPassword(String password) {
@@ -83,15 +76,10 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public void setAddresses(List<Address> addresses) {
-		this.addresses = addresses;
-	}
-
 	@Override
 	public String toString() {
 		return String.format(
-				"ID: %d, PESEL: %s, Password: %s, Enabled: %s, Email: %s, First Name: %s, Last Name: %s, Date Of Birth: %s, Addresses: %s",
-				getId(), getPesel(), isEnabled(), getEmail(), getFirstName(), getLastName(), getDateOfBirth(),
-				getAddresses());
+				"ID: %d, Username: %s, Password: %s, Enabled: %s, Email: %s, First Name: %s, Last Name: %s, Date Of Birth: %s, Addresses: %s",
+				getId(), getUsername(), isEnabled(), getEmail(), getFirstName(), getLastName(), getDateOfBirth());
 	}
 }

@@ -16,19 +16,17 @@ import java.util.List;
 @Repository
 public class StudentJDBCRepository implements StudentRepository {
 	JdbcTemplate template;
-
+	
+	private static final String SQL_FIND_BY_ID	= "SELECT * FROM user u INNER JOIN student s ON u.id = s.user_id && u.id = ?";
+	private static final String SQL_FIND_ALL = "SELECT * FROM user u INNER JOIN student s ON u.id = s.user_id";
+	
 	public StudentJDBCRepository(DataSource dataSource) {
 		this.template = new JdbcTemplate(dataSource);
 	}
 
 	@Override
 	public Student findById(Long id) {
-		String query = String.format("SELECT "
-				+ "u.id, u.pesel, u.password, u.enabled, u.email, u.firstName, u.lastName, u.dateOfBirth, s.album "
-				+ "FROM USER u INNER JOIN STUDENT s ON u.id = s.user_id && u.id = %d;", id);
-
-		Student student = template.query(query, new StudentResultSetExtractor());
-
+		Student student = template.query(SQL_FIND_BY_ID, new StudentResultSetExtractor(), id);
 		return student;
 	}
 
@@ -44,12 +42,7 @@ public class StudentJDBCRepository implements StudentRepository {
 
 	@Override
 	public List<Student> findAll() {
-		String query = String
-				.format("SELECT u.id, u.pesel, u.password, u.enabled, u.email, u.firstName, u.lastName, u.dateOfBirth, s.album "
-						+ "FROM USER u INNER JOIN STUDENT s ON u.id = s.user_id;");
-
-		List<Student> students = template.query(query, new StudentRowMapper());
-
+		List<Student> students = template.query(SQL_FIND_ALL, new StudentRowMapper());
 		return students;
 	}
 
@@ -81,15 +74,14 @@ public class StudentJDBCRepository implements StudentRepository {
 	private Student generate(ResultSet resultSet) throws SQLException {
 		Student student = new Student();
 		student.setId(resultSet.getLong("id"));
-		student.setPesel(resultSet.getString("pesel"));
+		student.setUsername(resultSet.getString("username"));
 		student.setPassword(resultSet.getString("password"));
 		student.setEnabled(resultSet.getBoolean("enabled"));
 		student.setEmail(resultSet.getString("email"));
-		student.setFirstName(resultSet.getString("firstName"));
-		student.setLastName(resultSet.getString("lastName"));
-		student.setDateOfBirth(resultSet.getDate("dateOfBirth"));
+		student.setFirstName(resultSet.getString("first_name"));
+		student.setLastName(resultSet.getString("last_name"));
+		student.setDateOfBirth(resultSet.getDate("date_of_birth"));
 		student.setAlbum(resultSet.getString("album"));
-
 		return student;
 	}
 

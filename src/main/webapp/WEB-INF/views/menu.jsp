@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <header class="main-header">
 	<a class="logo">
 	    <span class="logo-mini"><b>D</b>PRO</span>
@@ -52,7 +53,7 @@
         	</div>
      	</div>
         <ul class="sidebar-menu">
-        	<li class="active">
+        	<li>
             	<a href="<c:url value='/admin'/>">
                 	<i class="fa fa-circle-o"></i> <span>Dashboard</span>
                 </a>
@@ -64,7 +65,7 @@
             </li>
             <li>
             	<a href="#">
-                	<i class="fa fa-circle-o"></i> <span>Wykładowcy</span>
+                	<i class="fa fa-circle-o"></i> <span>WykÅadowcy</span>
                 </a>
             </li>
             <li>

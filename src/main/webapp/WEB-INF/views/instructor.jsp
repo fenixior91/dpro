@@ -41,7 +41,7 @@
 
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href class="btn btn-default btn-flat">Profil</a>
+                                    <a href="" class="btn btn-default btn-flat">Profil</a>
                                 </div>
                                 <div class="pull-right">
                                     <form action="<c:url value='/logout'/>" method="post">
@@ -104,11 +104,7 @@
         </section>
 
         <section class="content">
-            <div id="app">
-                <ol>
-                    <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
-                </ol>
-            </div>
+            
         </section>
     </div>
 </div>
