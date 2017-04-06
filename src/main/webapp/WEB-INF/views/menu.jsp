@@ -64,7 +64,7 @@
                 </a>
             </li>
             <li>
-            	<a href="#">
+            	<a href="<c:url value='/instructors'/>">
                 	<i class="fa fa-circle-o"></i> <span>WykÅadowcy</span>
                 </a>
             </li>

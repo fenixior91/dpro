@@ -1,61 +1,69 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Instructor;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.Date;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class InstructorJDBCRepository implements InstructorRepository {
-	JdbcTemplate template;
-
+	private JdbcTemplate template;
+	
+	private final static String SQL_FIND_BY_ID = "SELECT * FROM user u INNER JOIN instructor i ON u.id = i.user_id WHERE u.id = ?";
+	private final static String SQL_FIND_ALL = "SELECT * FROM user u INNER JOIN instructor i ON u.id = i.user_id";
 	public InstructorJDBCRepository(DataSource dataSource) {
-		template = new JdbcTemplate(dataSource);
-	}
-
-	@Override
-	public List<Instructor> findByScienceDegree(String scienceDegree) {
-		return null;
+		this.template = new JdbcTemplate(dataSource);
 	}
 
 	@Override
 	public Instructor findById(Long id) {
-		return null;
+		return template.query(SQL_FIND_BY_ID, new InstructorResultSetExtractor(), id);
 	}
-
-	@Override
-	public Instructor findByPesel(String pesel) {
-		return null;
-	}
-
-	@Override
-	public Instructor findByEmail(String email) {
-		return null;
-	}
-
+	
 	@Override
 	public List<Instructor> findAll() {
-		return null;
+		return template.query(SQL_FIND_ALL, new InstructorRowMapper());
+	}
+	
+	private Instructor generate(ResultSet resultSet) throws SQLException {
+		Instructor instructor = new Instructor();
+		instructor.setId(resultSet.getLong("id"));
+		instructor.setUsername(resultSet.getString("username"));
+		instructor.setPassword(resultSet.getString("password"));
+		instructor.setEnabled(resultSet.getBoolean("enabled"));
+		instructor.setEmail(resultSet.getString("email"));
+		instructor.setFirstName(resultSet.getString("first_name"));
+		instructor.setLastName(resultSet.getString("last_name"));
+		instructor.setDateOfBirth(resultSet.getDate("date_of_birth"));
+		instructor.setScienceDegree(resultSet.getString("science_degree"));
+		return instructor;
 	}
 
-	@Override
-	public List<Instructor> findAllByFirstName(String firstName) {
-		return null;
+	private class InstructorRowMapper implements RowMapper<Instructor> {
+
+		@Override
+		public Instructor mapRow(ResultSet resultSet, int i) throws SQLException {
+			return generate(resultSet);
+		}
 	}
 
-	@Override
-	public List<Instructor> findAllByLastName(String lastName) {
-		return null;
-	}
+	private class InstructorResultSetExtractor implements ResultSetExtractor<Instructor> {
+		@Override
+		public Instructor extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+			if (resultSet.next()) {
+				return generate(resultSet);
+			}
 
-	@Override
-	public List<Instructor> findAllByDateOfBirth(Date dateOfBirth) {
-		return null;
-	}
-
-	@Override
-	public List<Instructor> findAllByEnabled(boolean enabled) {
-		return null;
+			return null;
+		}
 	}
 }

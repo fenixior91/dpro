@@ -10,14 +10,13 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 @Repository
 public class StudentJDBCRepository implements StudentRepository {
-	JdbcTemplate template;
+	private JdbcTemplate template;
 	
-	private static final String SQL_FIND_BY_ID	= "SELECT * FROM user u INNER JOIN student s ON u.id = s.user_id && u.id = ?";
+	private static final String SQL_FIND_BY_ID	= "SELECT * FROM user u INNER JOIN student s ON u.id = s.user_id WHERE u.id = ?";
 	private static final String SQL_FIND_ALL = "SELECT * FROM user u INNER JOIN student s ON u.id = s.user_id";
 	
 	public StudentJDBCRepository(DataSource dataSource) {
@@ -31,44 +30,9 @@ public class StudentJDBCRepository implements StudentRepository {
 	}
 
 	@Override
-	public Student findByPesel(String pesel) {
-		return null;
-	}
-
-	@Override
-	public Student findByEmail(String email) {
-		return null;
-	}
-
-	@Override
 	public List<Student> findAll() {
 		List<Student> students = template.query(SQL_FIND_ALL, new StudentRowMapper());
 		return students;
-	}
-
-	@Override
-	public List<Student> findAllByFirstName(String firstName) {
-		return null;
-	}
-
-	@Override
-	public List<Student> findAllByLastName(String lastName) {
-		return null;
-	}
-
-	@Override
-	public List<Student> findAllByDateOfBirth(Date dateOfBirth) {
-		return null;
-	}
-
-	@Override
-	public List<Student> findAllByEnabled(boolean enabled) {
-		return null;
-	}
-
-	@Override
-	public Student findByAlbum(String album) {
-		return null;
 	}
 
 	private Student generate(ResultSet resultSet) throws SQLException {
