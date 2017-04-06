@@ -7,9 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import javax.sql.DataSource;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,8 +16,21 @@ import java.util.List;
 public class InstructorJDBCRepository implements InstructorRepository {
 	private JdbcTemplate template;
 	
-	private final static String SQL_FIND_BY_ID = "SELECT * FROM user u INNER JOIN instructor i ON u.id = i.user_id WHERE u.id = ?";
-	private final static String SQL_FIND_ALL = "SELECT * FROM user u INNER JOIN instructor i ON u.id = i.user_id";
+	private final static String SQL_FIND_BY_ID 
+	= "SELECT * FROM user u INNER JOIN instructor i ON u.id = i.user_id WHERE u.id = ?";
+	
+	private final static String SQL_FIND_ALL 
+	= "SELECT * FROM user u INNER JOIN instructor i ON u.id = i.user_id";
+	
+	private final static String SQL_INSERT_USER 
+	= "INSERT INTO user(username, password, first_name, last_name, enabled, email, date_of_birth)  VALUES(?, ?, ?, ?, ?, ?, ?)";
+	
+	private final static String SQL_INSERT_INSTRUCTOR 
+	= "INSERT INTO instructor(science_degree, user_id) VALUES(?, (SELECT MAX(id) FROM user))";
+	
+	private final static String SQL_INSERT_ROLE
+	= "INSERT INTO roles(username, role) VALUES(?, 'ROLE_INSTRUCTOR')";
+	
 	public InstructorJDBCRepository(DataSource dataSource) {
 		this.template = new JdbcTemplate(dataSource);
 	}
@@ -32,6 +43,21 @@ public class InstructorJDBCRepository implements InstructorRepository {
 	@Override
 	public List<Instructor> findAll() {
 		return template.query(SQL_FIND_ALL, new InstructorRowMapper());
+	}
+	
+	@Override
+	public boolean addInstructor(Instructor instructor) {
+		template.update(SQL_INSERT_ROLE, instructor.getUsername());
+		
+		template.update(SQL_INSERT_USER, 
+				instructor.getUsername(), instructor.getPassword(), 
+				instructor.getFirstName(), instructor.getLastName(), 
+				true, instructor.getEmail(), instructor.getDateOfBirth());
+		
+		
+		template.update(SQL_INSERT_INSTRUCTOR, instructor.getScienceDegree());
+		
+		return true;
 	}
 	
 	private Instructor generate(ResultSet resultSet) throws SQLException {
