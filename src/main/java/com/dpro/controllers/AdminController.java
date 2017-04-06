@@ -27,7 +27,7 @@ public class AdminController {
 		return "admin";
 	}
 	
-	@RequestMapping(value = "/students", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/students", method = RequestMethod.GET)
 	public String students(Model model) {
 		List<Student> students = studentService.findAll();
 		model.addAttribute("students", students);
@@ -36,11 +36,21 @@ public class AdminController {
 	}
 	
 
-	@RequestMapping(value = "/instructors", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/instructors", method = RequestMethod.GET)
 	public String instructors(Model model) {
 		List<Instructor> instructors = instructorService.findAll();
 		model.addAttribute("instructors", instructors);
 		
 		return "instructors";
+	}
+	
+	@RequestMapping(value = "/admin/add_instructor", method = RequestMethod.GET)
+	public String getAddInstructor() {
+		return "add_instructor";
+	}
+	
+	@RequestMapping(value = "/admin/add_instructor", method = RequestMethod.POST)
+	public String postAddInstructor() {
+		return "redirect:/admin/instructors";
 	}
 }

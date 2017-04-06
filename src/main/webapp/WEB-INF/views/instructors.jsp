@@ -23,7 +23,7 @@
 
 			<section class="content">
 				<div class="callout callout-info">
-					<button class="btn btn-success">Dodaj</button>
+					<a href="<c:url value='/admin/add_instructor'/>" class="btn btn-success">Dodaj</a>
 	      		</div>
 	      		
 				<div class="row">
