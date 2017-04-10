@@ -11,10 +11,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 public class DatabasePropertiesConfigration {
 	
 	@Value("${database.user}")
-	private static String databaseUser;
+	private String databaseUser;
 	
 	@Value("${database.password}")
-	private static String databasePassword;
+	private String databasePassword;
 	
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

@@ -7,4 +7,5 @@ import java.util.List;
 public interface StudentRepository {
 	Student findById(Long id);
 	List<Student> findAll();
+        boolean create(Student student);
 }

@@ -33,7 +33,7 @@ public class WebAppConfiguration extends WebMvcConfigurerAdapter {
 	public DriverManagerDataSource getDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/dpro");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/dpro?autoReconnect=true&useSSL=false");
 		dataSource.setUsername(environment.getProperty("database.user"));
 		dataSource.setPassword(environment.getProperty("database.password"));
 

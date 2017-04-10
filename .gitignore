@@ -8,3 +8,5 @@ src/main/webapp/META-INF
 .idea
 *.iml
 nb-configuration.xml
+src/main/webapp/WEB-INF/glassfish-web.xml
+nbactions.xml

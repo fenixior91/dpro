@@ -3,83 +3,93 @@ package com.dpro.domains;
 import java.util.Date;
 
 public class User {
-	private long id;
-	private String username;
-	private String password;
-	private boolean enabled;
-	private String email;
-	private String firstName;
-	private String lastName;
-	private Date dateOfBirth;
 
-	public long getId() {
-		return id;
-	}
+    private long id;
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private boolean enabled;
+    private String email;
+    private Date dateOfBirth;
+    private String pesel;
 
-	public String getUsername() {
-		return username;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getPesel() {
+        return pesel;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	@Override
-	public String toString() {
-		return String.format(
-				"ID: %d, Username: %s, Password: %s, Enabled: %s, Email: %s, First Name: %s, Last Name: %s, Date Of Birth: %s, Addresses: %s",
-				getId(), getUsername(), isEnabled(), getEmail(), getFirstName(), getLastName(), getDateOfBirth());
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "ID: %d, Username: %s, Password: %s, First Name: %s, Last Name: %s, Enabled: %s, Email: %s, Date Of Birth: %s",
+                getId(), getUsername(), getPassword(), getFirstName(), getLastName(), isEnabled(), getEmail(), getDateOfBirth());
+    }
 }
