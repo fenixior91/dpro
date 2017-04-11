@@ -13,7 +13,7 @@ public class UserDBUtil {
     public static final String PESEL_COLUMN = "pesel";
 
     public static final String SQL_INSERT_USER_PATTERN
-            = "INSERT INTO user(%s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+            = "INSERT INTO user(%s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, true, ?, ?, ?)";
     public static final String SQL_INSERT_USER_QUERY
             = String.format(SQL_INSERT_USER_PATTERN, USERNAME_COLUMN, PASSWORD_COLUMN, FIRST_NAME_COLUMN, LAST_NAME_COLUMN, ENABLED_COLUMN, EMAIL_COLUMN, DATE_OF_BIRTH_COLUMN, PESEL_COLUMN);
 

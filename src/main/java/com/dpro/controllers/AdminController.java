@@ -63,8 +63,8 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "/admin/instructor/update/{id}", method = RequestMethod.GET)
-    public String getUpdateInstructor(@PathVariable Long id, Model model) {
+    @RequestMapping(value = "/admin/instructor/edit/{id}", method = RequestMethod.GET)
+    public String getEditInstructor(@PathVariable Long id, Model model) {
         model.addAttribute("instructor", instructorService.findById(id));
         return "edit_instructor";
     }
@@ -78,14 +78,6 @@ public class AdminController {
         }
     }
 
-//	@RequestMapping(value = "/admin/instructor/attach_subjects", method = RequestMethod.POST)
-//	public String postAttachSubjects(@ModelAttribute Instructor instructor) {
-//		if (instructorService.update(instructor)) {
-//			return "redirect:/admin/instructors";
-//		} else {
-//			return "redirect:/500";
-//		}
-//	}
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         CustomDateEditor editor = new CustomDateEditor(new SimpleDateFormat("YYYY-MM-DD"), true);

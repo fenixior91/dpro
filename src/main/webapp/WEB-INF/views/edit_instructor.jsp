@@ -25,7 +25,7 @@
                                     <h3 class="box-title">Edytuj Wykładowcę</h3>
                                 </div>
 
-                                <form role="form" method="post" action="<c:url value='/admin/instructor/edit'/>" autocomplete="off">
+                                <form role="form" method="post" action="<c:url value='/admin/instructor/update'/>" autocomplete="off">
                                     <div class="box-body">
                                         <input id="id" name="id" type="hidden" value="${instructor.id}">
                                         <div class="form-group">
@@ -52,6 +52,12 @@
                                             <label for="date_of_birth">Data Urodzenia</label>
                                             <input id="date_of_birth" name="dateOfBirth" type="date" class="form-control" value="${instructor.dateOfBirth}">
                                         </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="pesel">PESEL</label>
+                                            <input id="pesel" name="pesel" type="text" class="form-control" value="${instructor.pesel}">
+                                        </div>
+                                        
                                         <div class="form-group">
                                             <label for="science_degree">Stopień naukowy</label>
                                             <input id="science_degree" name="scienceDegree" type="text" class="form-control" value="${instructor.scienceDegree}">
@@ -60,7 +66,7 @@
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-success">Dodaj</button>
+                                            <button type="submit" class="btn btn-success">Aktualizuj</button>
                                         </div>
                                     </div>
                                 </form>						

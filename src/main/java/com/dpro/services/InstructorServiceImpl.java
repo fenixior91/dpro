@@ -34,7 +34,9 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public boolean update(Map<String, String> instructor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Map<String, String> params) {
+        Instructor instructor = InstructorUtil.generate(params);
+        
+        return instructorRepository.update(instructor);
     }
 }

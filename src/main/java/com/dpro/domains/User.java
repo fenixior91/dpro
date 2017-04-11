@@ -89,7 +89,7 @@ public class User {
     @Override
     public String toString() {
         return String.format(
-                "ID: %d, Username: %s, Password: %s, First Name: %s, Last Name: %s, Enabled: %s, Email: %s, Date Of Birth: %s",
-                getId(), getUsername(), getPassword(), getFirstName(), getLastName(), isEnabled(), getEmail(), getDateOfBirth());
+                "ID: %d, Username: %s, Password: %s, First Name: %s, Last Name: %s, Enabled: %s, Email: %s, Date Of Birth: %s, PESEL: %s",
+                getId(), getUsername(), getPassword(), getFirstName(), getLastName(), isEnabled(), getEmail(), getDateOfBirth(), getPesel());
     }
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class InstructorUtil {
 
+    public static final String ID = "id";
     public static final String SCIENCE_DEGREE = "scienceDegree";
 
     private InstructorUtil() {
@@ -13,18 +14,23 @@ public class InstructorUtil {
     }
 
     public static Instructor generate(Map<String, String> params) {
-        Instructor student = new Instructor();
-        student.setUsername(params.get(UserUtil.USERNAME));
-        student.setPassword(params.get(UserUtil.PASSWORD));
-        student.setFirstName(params.get(UserUtil.FIRST_NAME));
-        student.setLastName(params.get(UserUtil.LAST_NAME));
-        student.setEnabled(Boolean.parseBoolean(params.get(UserUtil.ENABLED)));
-        student.setEmail(params.get(UserUtil.EMAIL));
-        student.setDateOfBirth(Date.valueOf(params.get(UserUtil.DATE_OF_BIRTH)));
-        student.setPesel(params.get(UserUtil.PESEL));
+        Instructor instructor = new Instructor();
+        
+        if (params.get(ID) != null) {
+            instructor.setId(Long.parseLong(params.get(ID)));
+        }
+        
+        instructor.setUsername(params.get(UserUtil.USERNAME));
+        instructor.setPassword(params.get(UserUtil.PASSWORD));
+        instructor.setFirstName(params.get(UserUtil.FIRST_NAME));
+        instructor.setLastName(params.get(UserUtil.LAST_NAME));
+        instructor.setEnabled(Boolean.parseBoolean(params.get(UserUtil.ENABLED)));
+        instructor.setEmail(params.get(UserUtil.EMAIL));
+        instructor.setDateOfBirth(Date.valueOf(params.get(UserUtil.DATE_OF_BIRTH)));
+        instructor.setPesel(params.get(UserUtil.PESEL));
 
-        student.setScienceDegree(SCIENCE_DEGREE);
+        instructor.setScienceDegree(params.get(SCIENCE_DEGREE));
 
-        return student;
+        return instructor;
     }
 }

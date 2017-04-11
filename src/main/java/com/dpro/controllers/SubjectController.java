@@ -53,7 +53,6 @@ public class SubjectController {
     
     @RequestMapping(value = "/admin/subject/create", method = RequestMethod.POST)
     public String postCreateSubject(@RequestParam Map<String, String> params, Model model) {
-        System.out.println(params);
         return "subjects";
     }
 

@@ -9,5 +9,5 @@ public interface InstructorService {
 	Instructor findById(Long id);
 	List<Instructor> findAll();
 	boolean create(Map<String, String> params);
-	boolean update(Map<String, String> instructor);
+	boolean update(Map<String, String> params);
 }

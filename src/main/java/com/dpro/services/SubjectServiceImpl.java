@@ -46,7 +46,6 @@ public class SubjectServiceImpl implements SubjectService {
         subject.setHours(Integer.parseInt(params.get("hours")));
         subject.setSubjectType(subjectTypeRepository.findById(Long.parseLong(params.get("subjectType"))));
 
-        System.out.println(subject.getSubjectType().getName());
         return true;
 //        return subjectRepository.create(subject);
     }

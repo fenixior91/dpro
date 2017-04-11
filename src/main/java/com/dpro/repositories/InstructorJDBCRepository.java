@@ -35,7 +35,7 @@ public class InstructorJDBCRepository implements InstructorRepository {
         template.update(UserDBUtil.SQL_INSERT_USER_QUERY,
                 instructor.getUsername(), instructor.getPassword(),
                 instructor.getFirstName(), instructor.getLastName(),
-                true, instructor.getEmail(), instructor.getDateOfBirth());
+                true, instructor.getEmail(), instructor.getDateOfBirth(), instructor.getPesel());
 
         template.update(InstructorDBUtil.SQL_INSERT_INSTRUCTOR_QUERY, instructor.getScienceDegree());
 
@@ -48,7 +48,7 @@ public class InstructorJDBCRepository implements InstructorRepository {
                 instructor.getUsername(), instructor.getPassword(),
                 instructor.getFirstName(), instructor.getLastName(),
                 instructor.isEnabled(), instructor.getEmail(),
-                instructor.getDateOfBirth(), instructor.getId());
+                instructor.getDateOfBirth(), instructor.getPesel(), instructor.getId());
 
         template.update(InstructorDBUtil.SQL_UPDATE_INSTRUCTOR_QUERY, instructor.getScienceDegree(), instructor.getId());
 
