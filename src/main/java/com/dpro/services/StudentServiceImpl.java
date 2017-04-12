@@ -35,4 +35,11 @@ public class StudentServiceImpl implements StudentService {
         
         return studentRepository.create(student);
     }
+
+    @Override
+    public boolean update(Map<String, String> params) {
+        Student student = StudentUtil.generate(params);
+        
+        return studentRepository.update(student);
+    }
 }

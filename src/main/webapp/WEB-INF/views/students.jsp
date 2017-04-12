@@ -23,7 +23,7 @@
 
                 <section class="content">
                     <div class="callout callout-info">
-                        <button class="btn btn-success">Dodaj</button>
+                        <a href="<c:url value='/admin/student/create'/>" class="btn btn-success">Dodaj</a>
                     </div>
 
                     <div class="row">
@@ -33,15 +33,10 @@
                                     <div class="box-body box-profile">
                                         <h3 class="profile-username text-center">${student.firstName} ${student.lastName}</h3>
 
-                                        <p class="text-muted text-center">${student.username}</p>
-                                        <ul class="list-group list-group-unbordered">
-                                            <li class="list-group-item"><b>Przedmioty</b>
-                                                <a href="" class="pull-right">Edytuj</a>
-                                            </li>
-                                        </ul>
-                                        <a href="" class="btn btn-primary btn-block"><b>Pokaż</b></a>
-                                        <a href="" class="btn btn-success btn-block"><b>Edytuj</b></a>
-                                        <a href="" class="btn btn-danger btn-block"><b>Usuń</b></a>
+                                        <p class="text-muted text-center">${student.album}</p>
+                                        <a href="<c:url value='/admin/student/show/${student.id}'/>" class="btn btn-primary btn-block"><b>Pokaż</b></a>
+                                        <a href="<c:url value='/admin/student/edit/${student.id}'/>" class="btn btn-success btn-block"><b>Edytuj</b></a>
+                                        <a href="<c:url value='/admin/student/delete/${student.id}'/>" class="btn btn-danger btn-block"><b>Usuń</b></a>
                                     </div>
                                 </div>
                             </div>

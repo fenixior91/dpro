@@ -11,33 +11,33 @@ public class InstructorDBUtil {
 
     public static final String ID_COLUMN = "instructor_id";
     public static final String SCIENCE_DEGREE_COLUMN = "science_degree";
-    
-    public static final String SQL_FIND_BY_ID_PATTERN =
-            "SELECT * FROM user u INNER JOIN instructor i ON u.%s = i.%s WHERE u.%s = ?";
-    public static final String SQL_FIND_BY_ID_QUERY
-            = String.format(SQL_FIND_BY_ID_PATTERN, UserDBUtil.ID_COLUMN, UserDBUtil.ID_COLUMN, UserDBUtil.ID_COLUMN);
+    public static final String USER_ID_COLUMN = "user_id";
+    public static final String ROLE = "ROLE_INSTRUCTOR";
 
-    public static final String SQL_FIND_ALL_PATTERN
+    private static final String SQL_FIND_BY_ID_PATTERN
+            = "SELECT * FROM user u INNER JOIN instructor i ON u.%s = i.%s WHERE u.%s = ?";
+    public static final String SQL_FIND_BY_ID_QUERY
+            = String.format(SQL_FIND_BY_ID_PATTERN, USER_ID_COLUMN, USER_ID_COLUMN, USER_ID_COLUMN);
+
+    private static final String SQL_FIND_ALL_PATTERN
             = "SELECT * FROM user u INNER JOIN instructor i ON u.%s = i.%s";
     public static final String SQL_FIND_ALL_QUERY
-            = String.format(SQL_FIND_ALL_PATTERN, UserDBUtil.ID_COLUMN, UserDBUtil.ID_COLUMN);
+            = String.format(SQL_FIND_ALL_PATTERN, USER_ID_COLUMN, USER_ID_COLUMN);
 
-    public static final String SQL_INSERT_INSTRUCTOR_PATTERN
-            = "INSERT INTO instructor(%s, %s)\n"
-            + "VALUES(?, (SELECT MAX(%s) FROM user))";
-    public static final String SQL_INSERT_INSTRUCTOR_QUERY
-            = String.format(SQL_INSERT_INSTRUCTOR_PATTERN, InstructorDBUtil.SCIENCE_DEGREE_COLUMN, UserDBUtil.ID_COLUMN, UserDBUtil.ID_COLUMN);
-
-    public static final String SQL_INSERT_ROLE_PATTERN
-            = "INSERT INTO roles(%s, %s) VALUES(?, 'ROLE_INSTRUCTOR')";
+    private static final String SQL_INSERT_ROLE_PATTERN
+            = "INSERT INTO roles(%s, %s) VALUES(?, '%s')";
     public static final String SQL_INSERT_ROLE_QUERY
-            = String.format(SQL_INSERT_ROLE_PATTERN, RolesDBUtil.USERNAME_COLUMN, RolesDBUtil.ROLE_COLUMN);
+            = String.format(SQL_INSERT_ROLE_PATTERN, RolesDBUtil.USERNAME_COLUMN, RolesDBUtil.ROLE_COLUMN, ROLE);
 
-    public static final String SQL_UPDATE_INSTRUCTOR_PATTERN
+    private static final String SQL_INSERT_PATTERN
+            = "INSERT INTO instructor(%s, %s) VALUES(?, (SELECT MAX(%s) FROM user))";
+    public static final String SQL_INSERT_QUERY
+            = String.format(SQL_INSERT_PATTERN, SCIENCE_DEGREE_COLUMN, USER_ID_COLUMN, USER_ID_COLUMN);
+
+    private static final String SQL_UPDATE_PATTERN
             = "UPDATE instructor SET %s = ? WHERE %s = ?";
-    public static final String SQL_UPDATE_INSTRUCTOR_QUERY
-            = String.format(SQL_UPDATE_INSTRUCTOR_PATTERN, InstructorDBUtil.SCIENCE_DEGREE_COLUMN, UserDBUtil.ID_COLUMN);
-
+    public static final String SQL_UPDATE_QUERY
+            = String.format(SQL_UPDATE_PATTERN, SCIENCE_DEGREE_COLUMN, USER_ID_COLUMN);
 
     private InstructorDBUtil() {
 
@@ -45,7 +45,7 @@ public class InstructorDBUtil {
 
     public static Instructor generate(ResultSet rs) throws SQLException {
         Instructor instructor = new Instructor();
-        
+
         instructor.setId(rs.getLong(UserDBUtil.ID_COLUMN));
         instructor.setUsername(rs.getString(UserDBUtil.USERNAME_COLUMN));
         instructor.setPassword(rs.getString(UserDBUtil.PASSWORD_COLUMN));
