@@ -1,10 +1,8 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Subject;
-import com.dpro.domains.User;
 import com.dpro.utils.SubjectDBUtil;
-import com.dpro.utils.SubjectTypeUtil;
-import com.dpro.utils.SubjectUtil;
+import com.dpro.utils.SubjectTypeDBUtil;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,18 +14,24 @@ public class SubjectJDBCRepository implements SubjectRepository {
     private final JdbcTemplate template;
 
     private static final String SQL_FIND_ALL_PATTERN
-            = "SELECT %s, %s, %s, %s, %s, %s FROM subject s INNER JOIN subject_type st ON s.%s = st.%s";
+            = "SELECT * FROM subject s INNER JOIN subject_type st ON s.%s = st.%s";
     private static final String SQL_FIND_ALL_QUERY
-            = String.format(SQL_FIND_ALL_PATTERN, SubjectUtil.ID, SubjectUtil.NAME, SubjectUtil.ECTS, SubjectUtil.HOURS, SubjectTypeUtil.ID, SubjectTypeUtil.NAME, SubjectTypeUtil.ID, SubjectTypeUtil.ID);
+            = String.format(SQL_FIND_ALL_PATTERN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN, SubjectTypeDBUtil.ID_COLUMN);
 
-    private static final String SQL_FIND_BY_ID
-            = "SELECT s.id, s.name, s.ects, s.hours, st.type FROM subject s INNER JOIN subject_type st ON s.subject_type_id = st.id WHERE s.id = ?";
+    private static final String SQL_FIND_BY_ID_PATTERN
+            = "SELECT * FROM subject s INNER JOIN subject_type st ON s.%s = st.%s WHERE s.%s = ?";
+    private static final String SQL_FIND_BY_ID_QUERY
+            = String.format(SQL_FIND_BY_ID_PATTERN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN, SubjectTypeDBUtil.ID_COLUMN, SubjectDBUtil.ID_COLUMN);
 
-    private static final String SQL_CREATE_SUBJECT
-            = "INSERT INTO subject(name, ects, hours, subject_type_id) VALUES(?, ?, ?, ?)";
+    private static final String SQL_INSERT_PATTERN
+            = "INSERT INTO subject(%s, %s, %s, %s) VALUES(?, ?, ?, ?)";
+    private static final String SQL_INSERT_QUERY
+            = String.format(SQL_INSERT_PATTERN, SubjectDBUtil.NAME_COLUMN, SubjectDBUtil.ECTS_COLUMN, SubjectDBUtil.HOURS_COLUMN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN);
 
-    private static final String SQL_CREATE_SUBJECT_TYPE
-            = "INSERT INTO subject_type(type) VALUES(?)";
+    private static final String SQL_UPDATE_PATTERN
+            = "UPDATE subject SET %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?";
+    private static final String SQL_UPDATE_QUERY
+            = String.format(SQL_UPDATE_PATTERN, SubjectDBUtil.NAME_COLUMN, SubjectDBUtil.ECTS_COLUMN, SubjectDBUtil.HOURS_COLUMN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN, SubjectDBUtil.ID_COLUMN);
 
     public SubjectJDBCRepository(DataSource dataSource) {
         template = new JdbcTemplate(dataSource);
@@ -40,16 +44,21 @@ public class SubjectJDBCRepository implements SubjectRepository {
 
     @Override
     public Subject findById(Long id) {
-        return template.query(SQL_FIND_BY_ID, new SubjectDBUtil.SubjectResultSetExtractor(), id);
-    }
-
-    @Override
-    public List<Subject> findAllByUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return template.query(SQL_FIND_BY_ID_QUERY, new SubjectDBUtil.SubjectResultSetExtractor(), id);
     }
 
     @Override
     public boolean create(Subject subject) {
-        return template.update(SQL_CREATE_SUBJECT, subject.getName(), subject.getEcts(), subject.getHours(), subject.getSubjectType().getId()) >= 1;
+        return template.update(SQL_INSERT_QUERY,
+                subject.getName(), subject.getEcts(),
+                subject.getHours(), subject.getSubjectType().getId()) > 0;
+    }
+
+    @Override
+    public boolean update(Subject subject) {
+        return template.update(SQL_UPDATE_QUERY,
+                subject.getName(), subject.getEcts(),
+                subject.getHours(), subject.getSubjectType().getId(),
+                subject.getId()) > 0;
     }
 }

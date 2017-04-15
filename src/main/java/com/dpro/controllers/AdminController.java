@@ -1,4 +1,4 @@
-package com.dpro.controllers.admin;
+package com.dpro.controllers;
 
 import com.dpro.domains.Instructor;
 import com.dpro.domains.Student;

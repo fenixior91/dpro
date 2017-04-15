@@ -5,18 +5,22 @@ import java.util.Map;
 
 public class SubjectTypeUtil {
 
-    public static final String ID = "subject_type_id";
-    public static final String NAME = "subject_type_name";
-    
+    public static final String ID = "subjectTypeId";
+    public static final String NAME = "subjectTypeName";
+
     private SubjectTypeUtil() {
-        
+
     }
-    
-    public SubjectType generate(Map<String, String> params) {
+
+    public static SubjectType generate(Map<String, String> params) {
         SubjectType subjectType = new SubjectType();
-        subjectType.setId(Long.parseLong(params.get(ID)));
-        subjectType.setName(params.get(NAME));
+
+        if (params.get(ID) != null) {
+            subjectType.setId(Long.parseLong(params.get(ID)));
+        }
         
+        subjectType.setName(params.get(NAME));
+
         return subjectType;
     }
 }

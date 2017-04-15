@@ -2,6 +2,7 @@ package com.dpro.services;
 
 import com.dpro.domains.SubjectType;
 import com.dpro.repositories.SubjectTypeRepository;
+import com.dpro.utils.SubjectTypeUtil;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,8 @@ public class SubjectTypeServiceImpl implements SubjectTypeService {
 
     @Override
     public boolean create(Map<String, String> params) {
-        SubjectType subjectType = new SubjectType();
-        subjectType.setId(Long.parseLong(params.get("id")));
-        subjectType.setName(params.get("name"));
+        SubjectType subjectType = SubjectTypeUtil.generate(params);
         
-        return subjectTypeRepository.create(subjectType);
-    }
-
-    @Override
-    public boolean create(SubjectType subjectType) {
         return subjectTypeRepository.create(subjectType);
     }
 }

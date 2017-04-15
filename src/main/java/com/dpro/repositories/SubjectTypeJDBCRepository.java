@@ -12,9 +12,18 @@ public class SubjectTypeJDBCRepository implements SubjectTypeRepository {
 
     private final JdbcTemplate template;
 
-    private static final String SQL_FIND_ALL = "SELECT * FROM subject_type";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM subject_type WHERE id = ?";
-    private static final String SQL_CREATE = "INSERT INTO subject_type(name) VALUES(?)";
+    private static final String SQL_FIND_ALL_QUERY
+            = "SELECT * FROM subject_type";
+
+    private static final String SQL_FIND_BY_ID_PATTERN
+            = "SELECT * FROM subject_type WHERE %s = ?";
+    private static final String SQL_FIND_BY_ID_QUERY
+            = String.format(SQL_FIND_BY_ID_PATTERN, SubjectTypeDBUtil.ID_COLUMN);
+
+    private static final String SQL_INSERT_PATTERN
+            = "INSERT INTO subject_type(%s) VALUES(?)";
+    private static final String SQL_INSERT_QUERY
+            = String.format(SQL_INSERT_PATTERN, SubjectTypeDBUtil.NAME_COLUMN);
 
     public SubjectTypeJDBCRepository(DataSource dataSource) {
         this.template = new JdbcTemplate(dataSource);
@@ -22,16 +31,16 @@ public class SubjectTypeJDBCRepository implements SubjectTypeRepository {
 
     @Override
     public List<SubjectType> findAll() {
-        return template.query(SQL_FIND_ALL, new SubjectTypeDBUtil.SubjectTypeRowMapper());
+        return template.query(SQL_FIND_ALL_QUERY, new SubjectTypeDBUtil.SubjectTypeRowMapper());
     }
 
     @Override
     public SubjectType findById(Long id) {
-        return template.query(SQL_FIND_BY_ID, new SubjectTypeDBUtil.SubjectTypeResultSetExtractor(), id);
+        return template.query(SQL_FIND_BY_ID_QUERY, new SubjectTypeDBUtil.SubjectTypeResultSetExtractor(), id);
     }
 
     @Override
     public boolean create(SubjectType subjectType) {
-        return template.update(SQL_CREATE, subjectType.getName()) > 0;
+        return template.update(SQL_INSERT_QUERY, subjectType.getName()) > 0;
     }
 }

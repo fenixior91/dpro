@@ -4,6 +4,7 @@ import com.dpro.domains.Subject;
 import com.dpro.domains.User;
 import com.dpro.repositories.SubjectRepository;
 import com.dpro.repositories.SubjectTypeRepository;
+import com.dpro.utils.SubjectUtil;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     SubjectRepository subjectRepository;
-    
+
     @Autowired
     SubjectTypeRepository subjectTypeRepository;
-    
+
     @Override
     public List<Subject> findAll() {
         return subjectRepository.findAll();
@@ -29,24 +30,18 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> findAllByUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public boolean create(Map<String, String> params) {
+        Subject subject = SubjectUtil.generate(params);
+        subject.setSubjectType(subjectTypeRepository.findById(Long.parseLong(params.get(SubjectUtil.SUBJECT_TYPE_ID))));
 
-    @Override
-    public boolean create(Subject subject) {
         return subjectRepository.create(subject);
     }
 
     @Override
-    public boolean create(Map<String, String> params) {
-        Subject subject = new Subject();
-        subject.setName(params.get("subjectName"));
-        subject.setEcts(Integer.parseInt(params.get("ects")));
-        subject.setHours(Integer.parseInt(params.get("hours")));
-        subject.setSubjectType(subjectTypeRepository.findById(Long.parseLong(params.get("subjectType"))));
-
-        return true;
-//        return subjectRepository.create(subject);
+    public boolean update(Map<String, String> params) {
+        Subject subject = SubjectUtil.generate(params);
+        subject.setSubjectType(subjectTypeRepository.findById(Long.parseLong(params.get(SubjectUtil.SUBJECT_TYPE_ID))));
+        
+        return subjectRepository.update(subject);
     }
 }

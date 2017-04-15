@@ -23,7 +23,8 @@
 
                 <section class="content">
                     <div class="callout callout-info">
-                        <a href="<c:url value='/admin/subject/create'/>" class="btn btn-success">Dodaj</a>
+                        <a href="<c:url value='/admin/subject/create'/>" class="btn btn-success">Dodaj Przedmiot</a>
+                        <a href="<c:url value='/admin/subject_type/create'/>" class="btn btn-success">Dodaj Typ Przedmiotu</a>
                     </div>
 
                     <div class="row">
@@ -33,7 +34,7 @@
                                     <div class="box-body box-profile">
                                         <h3 class="profile-username text-center">${subject.name}</h3>
 
-                                        <p class="text-muted text-center">${subject.subjectType}</p>
+                                        <p class="text-muted text-center">${subject.subjectType.name}</p>
                                         <a href="<c:url value='/admin/subject/show/${subject.id}'/>" class="btn btn-primary btn-block"><b>Pokaż</b></a>
                                         <a href="<c:url value='/admin/subject/edit/${instructor.id}'/>" class="btn btn-success btn-block"><b>Edytuj</b></a>
                                         <a href="<c:url value='/admin/subject/delete/${instructor.id}'/>" class="btn btn-danger btn-block"><b>Usuń</b></a>

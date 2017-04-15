@@ -23,36 +23,16 @@
                         <div class="col-xs-6">
                             <div class="box box-primary">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Nowy Przedmiot</h3>
+                                    <h3 class="box-title">Nowy Typ Przedmiotu</h3>
                                 </div>
 
-                                <form role="form" method="post" action="<c:url value='/admin/subject/create'/>" autocomplete="off">
+                                <form role="form" method="post" action="<c:url value='/admin/subject_type/create'/>" autocomplete="off">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label for="subjectName">Nazwa przedmiotu</label>
-                                            <input id="subjectName" name="subjectName" type="text" class="form-control">
+                                            <label for="subjectName">Nazwa typu przedmiotu</label>
+                                            <input id="subjectName" name="subjectTypeName" type="text" class="form-control">
                                         </div>
                                         
-                                        <div class="form-group">
-                                            <label for="ects">Punkty ECTS</label>
-                                            <input id="ects" name="ects" type="number" class="form-control" min="0" value="0">
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label for="hours">Liczba godzin</label>
-                                            <input id="hours" name="hours" type="number" class="form-control" min="0" value="10">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="subjectType">Typ przedmiotu</label>
-                                            <select id="subjectType" name="subjectTypeId" class="form-control">
-                                                <c:forEach var="subjectType" items="${subjectTypes}">
-                                                    <option value="${subjectType.id}">${subjectType.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                                         <div class="form-group">
