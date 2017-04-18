@@ -56,9 +56,11 @@ public class SubjectJDBCRepository implements SubjectRepository {
 
     @Override
     public boolean update(Subject subject) {
-        return template.update(SQL_UPDATE_QUERY,
+        template.update(SQL_UPDATE_QUERY,
                 subject.getName(), subject.getEcts(),
                 subject.getHours(), subject.getSubjectType().getId(),
-                subject.getId()) > 0;
+                subject.getId());
+        
+        return true;
     }
 }

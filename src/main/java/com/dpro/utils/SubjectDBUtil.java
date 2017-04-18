@@ -32,7 +32,7 @@ public class SubjectDBUtil {
         subjectType.setName(rs.getString(SubjectTypeDBUtil.NAME_COLUMN));
         
         subject.setSubjectType(subjectType);
-        
+                
         return subject;
     }
     

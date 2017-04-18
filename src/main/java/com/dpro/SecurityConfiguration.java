@@ -14,28 +14,28 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Import(WebAppConfiguration.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	DriverManagerDataSource dataSource;
+    @Autowired
+    DriverManagerDataSource dataSource;
 
-	@Autowired
-	CustomSuccessHandler customSuccessHandler;
+    @Autowired
+    CustomSuccessHandler customSuccessHandler;
 
-	@Autowired
-	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select username, password, enabled from user where username=?")
-				.authoritiesByUsernameQuery("select username, role from roles where username=?");
+    @Autowired
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, enabled from user where username=?")
+                .authoritiesByUsernameQuery("select username, role from roles where username=?");
 
-		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
-	}
+        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.authorizeRequests().antMatchers("/", "/static/**").permitAll().antMatchers("/admin/**").hasRole("ADMIN")
-				.antMatchers("/instructor/**").hasRole("INSTRUCTOR").antMatchers("/student/**").hasRole("STUDENT").and()
-				.formLogin().loginPage("/login").successHandler(customSuccessHandler).failureUrl("/login?error")
-				.usernameParameter("username").passwordParameter("password").and().csrf().and().exceptionHandling()
-				.accessDeniedPage("/403");
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests().antMatchers("/", "/static/**").permitAll().antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/instructor/**").hasRole("INSTRUCTOR").antMatchers("/student/**").hasRole("STUDENT").and()
+                .formLogin().loginPage("/login").successHandler(customSuccessHandler).failureUrl("/login?error")
+                .usernameParameter("username").passwordParameter("password").and().csrf().and().exceptionHandling()
+                .accessDeniedPage("/403").and().headers().disable();
+    }
 }

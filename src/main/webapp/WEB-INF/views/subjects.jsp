@@ -36,8 +36,8 @@
 
                                         <p class="text-muted text-center">${subject.subjectType.name}</p>
                                         <a href="<c:url value='/admin/subject/show/${subject.id}'/>" class="btn btn-primary btn-block"><b>Pokaż</b></a>
-                                        <a href="<c:url value='/admin/subject/edit/${instructor.id}'/>" class="btn btn-success btn-block"><b>Edytuj</b></a>
-                                        <a href="<c:url value='/admin/subject/delete/${instructor.id}'/>" class="btn btn-danger btn-block"><b>Usuń</b></a>
+                                        <a href="<c:url value='/admin/subject/edit/${subject.id}'/>" class="btn btn-success btn-block"><b>Edytuj</b></a>
+                                        <a href="<c:url value='/admin/subject/delete/${subject.id}'/>" class="btn btn-danger btn-block"><b>Usuń</b></a>
                                     </div>
                                 </div>
                             </div>
