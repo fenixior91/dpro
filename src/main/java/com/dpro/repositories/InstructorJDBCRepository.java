@@ -1,6 +1,7 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Instructor;
+import com.dpro.domains.Subject;
 import com.dpro.utils.InstructorDBUtil;
 import com.dpro.utils.UserDBUtil;
 
@@ -78,5 +79,15 @@ public class InstructorJDBCRepository implements InstructorRepository {
                 instructor.getScienceDegree(),
                 instructor.getId()
         );
+    }
+
+    @Override
+    public boolean attach(Subject subject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean attach(List<Subject> subjects) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

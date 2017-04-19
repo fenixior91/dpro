@@ -36,6 +36,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/instructor/**").hasRole("INSTRUCTOR").antMatchers("/student/**").hasRole("STUDENT").and()
                 .formLogin().loginPage("/login").successHandler(customSuccessHandler).failureUrl("/login?error")
                 .usernameParameter("username").passwordParameter("password").and().csrf().and().exceptionHandling()
-                .accessDeniedPage("/403").and().headers().disable();
+                .accessDeniedPage("/403");
     }
 }

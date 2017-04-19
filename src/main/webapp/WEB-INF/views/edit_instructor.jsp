@@ -79,7 +79,7 @@
                                     <h3 class="box-title">Przypisz Przedmioty</h3>
                                 </div>
 
-                                <form role="form" method="post" action="<c:url value='/admin/instructor/attach_subjects'/>" autocomplete="off">
+                                <form id="attach_subject" role="form" autocomplete="off">
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="form-group">
@@ -100,7 +100,7 @@
                                             </div>
                                         </div>
 
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-success">Aktualizuj</button>
