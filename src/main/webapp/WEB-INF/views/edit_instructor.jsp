@@ -86,33 +86,6 @@
                                                 <div class="col-xs-6">
                                                     <div id="instructor-dd" class="dd">
                                                         <ol id="instructor-dd-list" class="dd-list">
-                                                            <li class="dd-item" data-id="0">
-                                                                <div class="dd-handle">
-                                                                    <span class="pull-right">
-                                                                        <a title="Usuń przedmiot" class="text-danger">
-                                                                            <i class="fa fa-minus"></i>
-                                                                        </a>
-                                                                    </span> Item 1
-                                                                </div>
-                                                            </li>
-                                                            <li class="dd-item" data-id="1">
-                                                                <div class="dd-handle">
-                                                                    <span class="pull-right">
-                                                                        <a title="Usuń przedmiot" class="text-danger">
-                                                                            <i class="fa fa-minus"></i>
-                                                                        </a>
-                                                                    </span> Item 2
-                                                                </div>
-                                                            </li>
-                                                            <li class="dd-item" data-id="2">
-                                                                <div class="dd-handle">
-                                                                    <span class="pull-right">
-                                                                        <a title="Usuń przedmiot" class="text-danger">
-                                                                            <i class="fa fa-minus"></i>
-                                                                        </a>
-                                                                    </span> Item 3
-                                                                </div>
-                                                            </li>
                                                         </ol>
                                                     </div>
                                                 </div>
@@ -121,15 +94,6 @@
                                                 <div class="col-xs-6">
                                                     <div id="subject-dd" class="dd">
                                                         <ol id="subject-dd-list" class="dd-list">
-                                                            <!--                                                        <li class="dd-item" data-id="4">
-                                                                                                                        <div class="dd-handle">Item 1</div>
-                                                                                                                    </li>
-                                                                                                                    <li class="dd-item" data-id="5">
-                                                                                                                        <div class="dd-handle">Item 2</div>
-                                                                                                                    </li>
-                                                                                                                    <li class="dd-item" data-id="6">
-                                                                                                                        <div class="dd-handle">Item 3</div>
-                                                                                                                    </li>-->
                                                         </ol>
                                                     </div>
                                                 </div>

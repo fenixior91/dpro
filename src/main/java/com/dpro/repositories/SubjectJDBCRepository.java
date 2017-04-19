@@ -33,6 +33,19 @@ public class SubjectJDBCRepository implements SubjectRepository {
     private static final String SQL_UPDATE_QUERY
             = String.format(SQL_UPDATE_PATTERN, SubjectDBUtil.NAME_COLUMN, SubjectDBUtil.ECTS_COLUMN, SubjectDBUtil.HOURS_COLUMN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN, SubjectDBUtil.ID_COLUMN);
 
+    private static final String FIND_ALL_IN_USER
+            = "SELECT s.subject_id, s.subject_name, s.ects, s.hours, st.subject_type_id, st.subject_type_name "
+            + "FROM user u "
+            + "INNER JOIN user_subject us ON u.user_id = us.user_id AND us.user_id = ? "
+            + "INNER JOIN subject s ON s.subject_id = us.subject_id "
+            + "INNER JOIN subject_type st ON st.subject_type_id = s.subject_type_id";
+
+    private static final String FIND_ALL_NOT_IN_USER
+            = "SELECT s.subject_id, s.subject_name, s.ects, s.hours, st.subject_type_id, st.subject_type_name\n"
+            + "FROM subject s INNER JOIN subject_type st ON st.subject_type_id = s.subject_type_id\n"
+            + "WHERE s.subject_id NOT IN\n"
+            + "(SELECT us.subject_id FROM user_subject us WHERE us.user_id = ?)";
+
     public SubjectJDBCRepository(DataSource dataSource) {
         template = new JdbcTemplate(dataSource);
     }
@@ -60,7 +73,18 @@ public class SubjectJDBCRepository implements SubjectRepository {
                 subject.getName(), subject.getEcts(),
                 subject.getHours(), subject.getSubjectType().getId(),
                 subject.getId());
-        
+
         return true;
+    }
+
+    @Override
+    public List<Subject> findAllInUser(Long id) {
+        return template.query(FIND_ALL_IN_USER, new SubjectDBUtil.SubjectRowMapper(), id);
+
+    }
+
+    @Override
+    public List<Subject> findAllNotInUser(Long id) {
+        return template.query(FIND_ALL_NOT_IN_USER, new SubjectDBUtil.SubjectRowMapper(), id);
     }
 }

@@ -29,14 +29,14 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public boolean create(Map<String, String> params) {
         Instructor instructor = InstructorUtil.generate(params);
-        
+
         return instructorRepository.create(instructor);
     }
 
     @Override
     public boolean update(Map<String, String> params) {
         Instructor instructor = InstructorUtil.generate(params);
-        
+
         return instructorRepository.update(instructor);
     }
 }

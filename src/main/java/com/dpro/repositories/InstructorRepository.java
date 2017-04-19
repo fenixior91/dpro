@@ -1,6 +1,7 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Instructor;
+import com.dpro.domains.Subject;
 
 import java.util.List;
 

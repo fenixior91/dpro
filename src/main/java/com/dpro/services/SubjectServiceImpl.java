@@ -1,7 +1,6 @@
 package com.dpro.services;
 
 import com.dpro.domains.Subject;
-import com.dpro.domains.User;
 import com.dpro.repositories.SubjectRepository;
 import com.dpro.repositories.SubjectTypeRepository;
 import com.dpro.utils.SubjectUtil;
@@ -41,7 +40,17 @@ public class SubjectServiceImpl implements SubjectService {
     public boolean update(Map<String, String> params) {
         Subject subject = SubjectUtil.generate(params);
         subject.setSubjectType(subjectTypeRepository.findById(Long.parseLong(params.get(SubjectUtil.SUBJECT_TYPE_ID))));
-        
+
         return subjectRepository.update(subject);
+    }
+
+    @Override
+    public List<Subject> findAllInUser(Long id) {
+        return subjectRepository.findAllInUser(id);
+    }
+
+    @Override
+    public List<Subject> findAllNotInUser(Long id) {
+        return subjectRepository.findAllNotInUser(id);
     }
 }
