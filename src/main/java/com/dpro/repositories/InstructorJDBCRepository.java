@@ -1,19 +1,80 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Instructor;
-import com.dpro.domains.Subject;
-import com.dpro.utils.InstructorDBUtil;
-import com.dpro.utils.UserDBUtil;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 
 @Repository
 public class InstructorJDBCRepository implements InstructorRepository {
 
     private final JdbcTemplate template;
+
+    private static final String SQL_FIND_BY_ID_QUERY
+            = "SELECT * FROM user u\n"
+            + "INNER JOIN instructor i ON u." + USER_ID_COLUMN + " = i." + USER_ID_COLUMN + "\n"
+            + "WHERE u." + USER_ID_COLUMN + " = ?";
+
+    private static final String SQL_FIND_ALL_QUERY
+            = "SELECT * FROM user u\n"
+            + "INNER JOIN instructor i ON u." + USER_ID_COLUMN + " = i." + USER_ID_COLUMN;
+
+    private static final String SQL_INSERT_ROLE_QUERY
+            = "INSERT INTO roles(username, role)\n"
+            + "VALUES(?, '" + ROLE + "')";
+
+    private static final String SQL_INSERT_INSTRUCTOR_QUERY
+            = "INSERT INTO instructor(" + SCIENCE_DEGREE_COLUMN + ", " + USER_ID_COLUMN + ")\n"
+            + "VALUES(?, (SELECT MAX(" + USER_ID_COLUMN + ") FROM user))";
+
+    private static final String SQL_UPDATE_INSTRUCTOR_QUERY
+            = "UPDATE instructor SET " + SCIENCE_DEGREE_COLUMN + " = ?\n"
+            + "WHERE " + USER_ID_COLUMN + " = ?";
+
+    private static Instructor generate(ResultSet rs) throws SQLException {
+        Instructor instructor = new Instructor();
+
+        instructor.setId(rs.getLong(USER_ID_COLUMN));
+        instructor.setUsername(rs.getString(USERNAME_COLUMN));
+        instructor.setPassword(rs.getString(PASSWORD_COLUMN));
+        instructor.setFirstName(rs.getString(FIRST_NAME_COLUMN));
+        instructor.setLastName(rs.getString(LAST_NAME_COLUMN));
+        instructor.setEnabled(rs.getBoolean(ENABLED_COLUMN));
+        instructor.setEmail(rs.getString(EMAIL_COLUMN));
+        instructor.setDateOfBirth(rs.getDate(DATE_OF_BIRTH_COLUMN));
+        instructor.setPesel(rs.getString(PESEL_COLUMN));
+
+        instructor.setScienceDegree(rs.getString(SCIENCE_DEGREE_COLUMN));
+
+        return instructor;
+    }
+
+    public static class InstructorRowMapper implements RowMapper<Instructor> {
+
+        @Override
+        public Instructor mapRow(ResultSet resultSet, int i) throws SQLException {
+            return generate(resultSet);
+        }
+    }
+
+    public static class InstructorResultSetExtractor implements ResultSetExtractor<Instructor> {
+
+        @Override
+        public Instructor extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+            if (resultSet.next()) {
+                return generate(resultSet);
+            }
+
+            return null;
+        }
+    }
 
     public InstructorJDBCRepository(DataSource dataSource) {
         this.template = new JdbcTemplate(dataSource);
@@ -21,63 +82,40 @@ public class InstructorJDBCRepository implements InstructorRepository {
 
     @Override
     public Instructor findById(Long id) {
-        return template.query(InstructorDBUtil.SQL_FIND_BY_ID_QUERY, new InstructorDBUtil.InstructorResultSetExtractor(), id);
+        return template.query(SQL_FIND_BY_ID_QUERY, new InstructorResultSetExtractor(), id);
     }
 
     @Override
     public List<Instructor> findAll() {
-        return template.query(InstructorDBUtil.SQL_FIND_ALL_QUERY, new InstructorDBUtil.InstructorRowMapper());
+        return template.query(SQL_FIND_ALL_QUERY, new InstructorRowMapper());
     }
 
     @Override
     public boolean create(Instructor instructor) {
-        if (insertInstructorRole(instructor) < 1) {
-            return false;
-        }
+        template.update(SQL_INSERT_ROLE_QUERY, instructor.getUsername());
+        
+        template.update(SQL_INSERT_USER_QUERY,
+                instructor.getUsername(), instructor.getPassword(),
+                instructor.getFirstName(), instructor.getLastName(),
+                instructor.getEmail(), instructor.getDateOfBirth(), instructor.getPesel());
+        
+        template.update(SQL_INSERT_INSTRUCTOR_QUERY, instructor.getScienceDegree());
 
-        if (insertUser(instructor) < 1) {
-            return false;
-        }
-
-        return insertInstructor(instructor) >= 1;
+        return true;
     }
 
     @Override
     public boolean update(Instructor instructor) {
-        if (updateUser(instructor) < 1) {
-            return false;
-        }
-
-        return updateInstructor(instructor) >= 1;
-    }
-
-    private int insertInstructorRole(Instructor instructor) {
-        return template.update(InstructorDBUtil.SQL_INSERT_ROLE_QUERY, instructor.getUsername());
-    }
-
-    private int insertUser(Instructor instructor) {
-        return template.update(UserDBUtil.SQL_INSERT_QUERY,
-                instructor.getUsername(), instructor.getPassword(),
-                instructor.getFirstName(), instructor.getLastName(),
-                instructor.getEmail(), instructor.getDateOfBirth(), instructor.getPesel());
-    }
-
-    private int insertInstructor(Instructor instructor) {
-        return template.update(InstructorDBUtil.SQL_INSERT_QUERY, instructor.getScienceDegree());
-    }
-
-    private int updateUser(Instructor instructor) {
-        return template.update(UserDBUtil.SQL_UPDATE_QUERY,
+        template.update(SQL_UPDATE_USER_QUERY,
                 instructor.getUsername(), instructor.getPassword(),
                 instructor.getFirstName(), instructor.getLastName(),
                 instructor.isEnabled(), instructor.getEmail(),
                 instructor.getDateOfBirth(), instructor.getPesel(), instructor.getId());
-    }
 
-    private int updateInstructor(Instructor instructor) {
-        return template.update(InstructorDBUtil.SQL_UPDATE_QUERY,
+        template.update(SQL_UPDATE_INSTRUCTOR_QUERY,
                 instructor.getScienceDegree(),
-                instructor.getId()
-        );
+                instructor.getId());
+
+        return true;
     }
 }

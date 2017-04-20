@@ -1,11 +1,16 @@
 package com.dpro.repositories;
 
 import com.dpro.domains.Subject;
-import com.dpro.utils.SubjectDBUtil;
+import com.dpro.domains.SubjectType;
 import com.dpro.utils.SubjectTypeDBUtil;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -13,44 +18,45 @@ public class SubjectJDBCRepository implements SubjectRepository {
 
     private final JdbcTemplate template;
 
-    private static final String SQL_FIND_ALL_PATTERN
-            = "SELECT * FROM subject s INNER JOIN subject_type st ON s.%s = st.%s";
     private static final String SQL_FIND_ALL_QUERY
-            = String.format(SQL_FIND_ALL_PATTERN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN, SubjectTypeDBUtil.ID_COLUMN);
+            = "SELECT * FROM subject s\n"
+            + "INNER JOIN subject_type st ON s." + SUBJECT_TYPE_ID_COLUMN + " = st." + SUBJECT_TYPE_ID_COLUMN;
 
-    private static final String SQL_FIND_BY_ID_PATTERN
-            = "SELECT * FROM subject s INNER JOIN subject_type st ON s.%s = st.%s WHERE s.%s = ?";
     private static final String SQL_FIND_BY_ID_QUERY
-            = String.format(SQL_FIND_BY_ID_PATTERN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN, SubjectTypeDBUtil.ID_COLUMN, SubjectDBUtil.ID_COLUMN);
+            = "SELECT * FROM subject s\n"
+            + "INNER JOIN subject_type st ON s." + SUBJECT_TYPE_ID_COLUMN + " = st." + SUBJECT_TYPE_ID_COLUMN + "\n"
+            + " WHERE s." + SUBJECT_TYPE_ID_COLUMN + " = ?";
 
-    private static final String SQL_INSERT_PATTERN
-            = "INSERT INTO subject(%s, %s, %s, %s) VALUES(?, ?, ?, ?)";
     private static final String SQL_INSERT_QUERY
-            = String.format(SQL_INSERT_PATTERN, SubjectDBUtil.NAME_COLUMN, SubjectDBUtil.ECTS_COLUMN, SubjectDBUtil.HOURS_COLUMN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN);
+            = "INSERT INTO subject(" + NAME_COLUMN + ", " + ECTS_COLUMN + ", " + HOURS_COLUMN + ", " + SUBJECT_TYPE_ID_COLUMN + ")\n"
+            + "VALUES(?, ?, ?, ?)";
 
-    private static final String SQL_UPDATE_PATTERN
-            = "UPDATE subject SET %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?";
     private static final String SQL_UPDATE_QUERY
-            = String.format(SQL_UPDATE_PATTERN, SubjectDBUtil.NAME_COLUMN, SubjectDBUtil.ECTS_COLUMN, SubjectDBUtil.HOURS_COLUMN, SubjectDBUtil.SUBJECT_TYPE_ID_COLUMN, SubjectDBUtil.ID_COLUMN);
+            = "UPDATE subject\n"
+            + "SET " + NAME_COLUMN + " = ?, " + ECTS_COLUMN + " = ?, " + HOURS_COLUMN + " = ?, " + SUBJECT_TYPE_ID_COLUMN + " = ?\n"
+            + "WHERE " + SUBJECT_ID_COLUMN + " = ?\n";
 
-    private static final String FIND_ALL_IN_USER
-            = "SELECT s.subject_id, s.subject_name, s.ects, s.hours, st.subject_type_id, st.subject_type_name "
-            + "FROM user u "
-            + "INNER JOIN user_subject us ON u.user_id = us.user_id AND us.user_id = ? "
-            + "INNER JOIN subject s ON s.subject_id = us.subject_id "
-            + "INNER JOIN subject_type st ON st.subject_type_id = s.subject_type_id";
+    private static final String SQL_FIND_ALL_IN_USER_QUERY
+            = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + NAME_COLUMN + ", s." + ECTS_COLUMN + ", s." + HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st." + SUBJECT_TYPE_NAME_COLUMN + "\n"
+            + "FROM user u\n"
+            + "INNER JOIN user_subject us ON u." + USER_ID + " = us." + USER_ID + " AND us." + USER_ID + " = ?\n"
+            + "INNER JOIN subject s ON s." + SUBJECT_ID_COLUMN + " = us." + SUBJECT_ID_COLUMN + "\n"
+            + "INNER JOIN subject_type st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN;
 
-    private static final String FIND_ALL_NOT_IN_USER
-            = "SELECT s.subject_id, s.subject_name, s.ects, s.hours, st.subject_type_id, st.subject_type_name\n"
-            + "FROM subject s INNER JOIN subject_type st ON st.subject_type_id = s.subject_type_id\n"
-            + "WHERE s.subject_id NOT IN\n"
-            + "(SELECT us.subject_id FROM user_subject us WHERE us.user_id = ?)";
+    private static final String SQL_FIND_ALL_NOT_IN_USER_QUERY
+            = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + NAME_COLUMN + ", s." + ECTS_COLUMN + ", s." + HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st. " + SUBJECT_TYPE_NAME_COLUMN + "\n"
+            + "FROM subject s\n"
+            + "INNER JOIN subject_type st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN + "\n"
+            + "WHERE s." + SUBJECT_ID_COLUMN + " NOT IN\n"
+            + "(SELECT us." + SUBJECT_ID_COLUMN + " FROM user_subject us WHERE us." + USER_ID + " = ?)";
 
-    private static final String SQL_DETACH_SUBJECTS_IN_USER
-            = "DELETE FROM user_subject WHERE user_id = ?";
+    private static final String SQL_DETACH_SUBJECTS_IN_USER_QUERY
+            = "DELETE FROM user_subject\n"
+            + "WHERE " + USER_ID + " = ?";
 
-    private static final String SQL_ATTACH_SUBJECT_IN_USER
-            = "INSERT INTO user_subject(user_id, subject_id) VALUES(?, ?)";
+    private static final String SQL_ATTACH_SUBJECT_IN_USER_QUERY
+            = "INSERT INTO user_subject(" + USER_ID + ", " + SUBJECT_ID_COLUMN + ")\n"
+            + "VALUES(?, ?)";
 
     public SubjectJDBCRepository(DataSource dataSource) {
         template = new JdbcTemplate(dataSource);
@@ -58,19 +64,21 @@ public class SubjectJDBCRepository implements SubjectRepository {
 
     @Override
     public List<Subject> findAll() {
-        return template.query(SQL_FIND_ALL_QUERY, new SubjectDBUtil.SubjectRowMapper());
+        return template.query(SQL_FIND_ALL_QUERY, new SubjectRowMapper());
     }
 
     @Override
     public Subject findById(Long id) {
-        return template.query(SQL_FIND_BY_ID_QUERY, new SubjectDBUtil.SubjectResultSetExtractor(), id);
+        return template.query(SQL_FIND_BY_ID_QUERY, new SubjectResultSetExtractor(), id);
     }
 
     @Override
     public boolean create(Subject subject) {
-        return template.update(SQL_INSERT_QUERY,
+        template.update(SQL_INSERT_QUERY,
                 subject.getName(), subject.getEcts(),
-                subject.getHours(), subject.getSubjectType().getId()) > 0;
+                subject.getHours(), subject.getSubjectType().getId());
+
+        return true;
     }
 
     @Override
@@ -85,28 +93,63 @@ public class SubjectJDBCRepository implements SubjectRepository {
 
     @Override
     public List<Subject> findAllInUser(Long id) {
-        return template.query(FIND_ALL_IN_USER, new SubjectDBUtil.SubjectRowMapper(), id);
+        return template.query(SQL_FIND_ALL_IN_USER_QUERY, new SubjectRowMapper(), id);
 
     }
 
     @Override
     public List<Subject> findAllNotInUser(Long id) {
-        return template.query(FIND_ALL_NOT_IN_USER, new SubjectDBUtil.SubjectRowMapper(), id);
+        return template.query(SQL_FIND_ALL_NOT_IN_USER_QUERY, new SubjectRowMapper(), id);
     }
 
     @Override
     public boolean attachToUser(Long id, Subject subject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        template.update(SQL_ATTACH_SUBJECT_IN_USER_QUERY, id, subject.getId());
+
+        return true;
     }
 
     @Override
     public boolean attachToUser(Long id, List<Subject> subjects) {
-        template.update(SQL_DETACH_SUBJECTS_IN_USER, id);
-
-        subjects.forEach(subject -> {
-            template.update(SQL_ATTACH_SUBJECT_IN_USER, id, subject.getId());
-        });
+        template.update(SQL_DETACH_SUBJECTS_IN_USER_QUERY, id);
+        subjects.forEach(subject -> attachToUser(id, subject));
 
         return true;
+    }
+
+    public static Subject generate(ResultSet rs) throws SQLException {
+        Subject subject = new Subject();
+        subject.setId(rs.getLong(SUBJECT_ID_COLUMN));
+        subject.setName(rs.getString(NAME_COLUMN));
+        subject.setEcts(rs.getInt(ECTS_COLUMN));
+        subject.setHours(rs.getInt(HOURS_COLUMN));
+
+        SubjectType subjectType = new SubjectType();
+        subjectType.setId(rs.getLong(SUBJECT_TYPE_ID_COLUMN));
+        subjectType.setName(rs.getString(SUBJECT_TYPE_NAME_COLUMN));
+
+        subject.setSubjectType(subjectType);
+
+        return subject;
+    }
+
+    private static class SubjectRowMapper implements RowMapper<Subject> {
+
+        @Override
+        public Subject mapRow(ResultSet resultSet, int i) throws SQLException {
+            return generate(resultSet);
+        }
+    }
+
+    private static class SubjectResultSetExtractor implements ResultSetExtractor<Subject> {
+
+        @Override
+        public Subject extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+            if (resultSet.next()) {
+                return generate(resultSet);
+            }
+
+            return null;
+        }
     }
 }
