@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     $.getJSON("/api/instructor/" + instructorId + "/subject/list", function (data) {
         $.map(data, function (subject) {
-            addSubjectToList(subject, false);
+            instructorSubjects.push(subject);
             addSubject("instructor", subject);
         });
     });
@@ -25,7 +25,7 @@ $(document).ready(function () {
             type: "POST",
             contentType: "application/json",
             url: "/api/instructor/" + instructorId + "/subject/attach",
-            data: JSON.stringify({a: "x", b: "b"}),
+            data: JSON.stringify(instructorSubjects),
             dataType: "json",
             headers: {"X-CSRF-TOKEN": token},
             success: function (data) {
@@ -67,28 +67,12 @@ $(document).ready(function () {
         });
     }
 
-    function addSubjectToList(subject, isNew) {
-        instructorSubjects.push({
-            id: subject.id,
-            name: subject.name,
-            isNew: isNew,
-            isAttached: true
-        });
-    }
-
     function detachSubjects(subject) {
-        instructorSubjects.forEach(function (v) {
-            if (v.id === subject.id) {
-                v.isAttached = false;
-            }
-        });
+        var index = instructorSubjects.indexOf(subject);
+        instructorSubjects.splice(index, 1);
     }
 
     function attachSubjects(subject) {
-        instructorSubjects.forEach(function (v) {
-            if (v.id === subject.id) {
-                console.log(v);
-            }
-        });
+        instructorSubjects.push(subject);
     }
 });

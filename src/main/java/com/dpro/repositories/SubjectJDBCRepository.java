@@ -46,6 +46,12 @@ public class SubjectJDBCRepository implements SubjectRepository {
             + "WHERE s.subject_id NOT IN\n"
             + "(SELECT us.subject_id FROM user_subject us WHERE us.user_id = ?)";
 
+    private static final String SQL_DETACH_SUBJECTS_IN_USER
+            = "DELETE FROM user_subject WHERE user_id = ?";
+
+    private static final String SQL_ATTACH_SUBJECT_IN_USER
+            = "INSERT INTO user_subject(user_id, subject_id) VALUES(?, ?)";
+
     public SubjectJDBCRepository(DataSource dataSource) {
         template = new JdbcTemplate(dataSource);
     }
@@ -86,5 +92,21 @@ public class SubjectJDBCRepository implements SubjectRepository {
     @Override
     public List<Subject> findAllNotInUser(Long id) {
         return template.query(FIND_ALL_NOT_IN_USER, new SubjectDBUtil.SubjectRowMapper(), id);
+    }
+
+    @Override
+    public boolean attachToUser(Long id, Subject subject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean attachToUser(Long id, List<Subject> subjects) {
+        template.update(SQL_DETACH_SUBJECTS_IN_USER, id);
+
+        subjects.forEach(subject -> {
+            template.update(SQL_ATTACH_SUBJECT_IN_USER, id, subject.getId());
+        });
+
+        return true;
     }
 }

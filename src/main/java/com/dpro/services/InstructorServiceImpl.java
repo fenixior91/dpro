@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dpro.domains.Instructor;
-import com.dpro.domains.Subject;
 import com.dpro.repositories.InstructorRepository;
 import com.dpro.utils.InstructorUtil;
 import java.util.Map;
@@ -39,15 +38,5 @@ public class InstructorServiceImpl implements InstructorService {
         Instructor instructor = InstructorUtil.generate(params);
 
         return instructorRepository.update(instructor);
-    }
-
-    @Override
-    public boolean attach(Subject subject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean attach(List<Subject> subjects) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

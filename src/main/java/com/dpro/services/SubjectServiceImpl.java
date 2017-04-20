@@ -53,4 +53,14 @@ public class SubjectServiceImpl implements SubjectService {
     public List<Subject> findAllNotInUser(Long id) {
         return subjectRepository.findAllNotInUser(id);
     }
+
+    @Override
+    public boolean attachToUser(Long id, Subject subject) {
+        return subjectRepository.attachToUser(id, subject);
+    }
+
+    @Override
+    public boolean attachToUser(Long id, List<Subject> subjects) {
+        return subjectRepository.attachToUser(id, subjects);
+    }
 }

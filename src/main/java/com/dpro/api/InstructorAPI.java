@@ -1,5 +1,6 @@
 package com.dpro.api;
 
+import com.dpro.api.wrappers.SubjectWrapper;
 import com.dpro.domains.Instructor;
 import com.dpro.domains.Subject;
 import com.dpro.services.InstructorService;
@@ -54,9 +55,11 @@ public class InstructorAPI extends AbstractAPI {
         return subjectService.findAllNotInUser(id);
     }
 
-    @RequestMapping(value = "/instructor/{id}/subject/attach", method = RequestMethod.POST)
+    @RequestMapping(value = "/instructor/{id}/subject/attach", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> attach(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String, String>> attach(@PathVariable Long id, @RequestBody List<Subject> subjects) {
+        subjectService.attachToUser(id, subjects);
+        
         Map<String, String> result = new HashMap<>();
         result.put("status", "ok");
         result.put("code", "200");

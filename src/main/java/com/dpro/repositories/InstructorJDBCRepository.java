@@ -80,14 +80,4 @@ public class InstructorJDBCRepository implements InstructorRepository {
                 instructor.getId()
         );
     }
-
-    @Override
-    public boolean attach(Subject subject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean attach(List<Subject> subjects) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
