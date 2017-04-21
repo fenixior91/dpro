@@ -59,12 +59,12 @@
                 </a>
             </li>
             <li>
-                <a href="<c:url value='/admin/students'/>">
+                <a href="<c:url value='/admin/student/list'/>">
                     <i class="fa fa-circle-o"></i> <span>Studenci</span>
                 </a>
             </li>
             <li>
-                <a href="<c:url value='/admin/instructors'/>">
+                <a href="<c:url value='/admin/instructor/list'/>">
                     <i class="fa fa-circle-o"></i> <span>Wykładowcy</span>
                 </a>
             </li>

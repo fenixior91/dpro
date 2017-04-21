@@ -40,12 +40,12 @@
 
                                         <div class="form-group">
                                             <label for="first_name">Imię</label>
-                                            <input id="first_name" name="firstName" type="text" class="form-control" value="">
+                                            <input id="firstName" name="firstName" type="text" class="form-control" value="">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="last_name">Nazwisko</label>
-                                            <input id="last_name" name="lastName" type="text" class="form-control" value="">
+                                            <input id="lastName" name="lastName" type="text" class="form-control" value="">
                                         </div>
 
                                         <div class="form-group">
@@ -55,7 +55,7 @@
 
                                         <div class="form-group">
                                             <label for="date_of_birth">Data Urodzenia</label>
-                                            <input id="date_of_birth" name="dateOfBirth" type="date" class="form-control" value="">
+                                            <input id="dateOfBirth" name="dateOfBirth" type="date" class="form-control" value="">
                                         </div>
 
                                         <div class="form-group">

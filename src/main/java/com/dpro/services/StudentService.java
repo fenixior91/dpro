@@ -3,7 +3,6 @@ package com.dpro.services;
 import com.dpro.domains.Student;
 
 import java.util.List;
-import java.util.Map;
 
 public interface StudentService {
 
@@ -11,7 +10,7 @@ public interface StudentService {
 
     List<Student> findAll();
 
-    boolean create(Map<String, String> params);
+    boolean create(Student student);
 
-    boolean update(Map<String, String> params);
+    boolean update(Student student);
 }

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.dpro.domains.Instructor;
 import com.dpro.repositories.InstructorRepository;
-import com.dpro.utils.InstructorUtil;
-import java.util.Map;
 
 /**
  * Serwis wspomagający manipulowaniem danymi wykadowcy przed zmianą w bazie
@@ -40,26 +38,20 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     /**
-     * @param params parametry wykładowcy otrzymane z formularza, z których będą
-     * czerpane dane przy tworzeniu obiektu
+     * @param instructor parametry wykładowcy otrzymane z formularza
      * @return wartość logiczna, czy dodawanie wykładowcy powiodło się
      */
     @Override
-    public boolean create(Map<String, String> params) {
-        Instructor instructor = InstructorUtil.generate(params);
-
+    public boolean create(Instructor instructor) {
         return instructorRepository.create(instructor);
     }
 
     /**
-     * @param params parametry wykładowcy otrzymane z formularza, z których będą
-     * czerpane dane przy tworzeniu obiektu
+     * @param instructor parametry wykładowcy otrzymane z formularza
      * @return wartość logiczna, czy aktualizowanie wykładowcy powiodło się
      */
     @Override
-    public boolean update(Map<String, String> params) {
-        Instructor instructor = InstructorUtil.generate(params);
-
+    public boolean update(Instructor instructor) {
         return instructorRepository.update(instructor);
     }
 }

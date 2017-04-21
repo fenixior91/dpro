@@ -7,7 +7,6 @@ import com.dpro.services.StudentService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -17,8 +16,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Kontroler do obsługi żądań w panelu administracyjnym
+ *
+ * @author Tomasz Truszkowski
+ */
 @Controller
 public class AdminController {
 
@@ -55,13 +58,13 @@ public class AdminController {
     /**
      * Tworzy nowego wykładowcę
      *
-     * @param params przesłane parametry wykładowcy z formularza
+     * @param instructor przesłane parametry wykładowcy z formularza
      * @return przekierowanie do listy wykładowców, w przeciwnym wypadku do
      * strony błędu
      */
     @RequestMapping(value = "/admin/instructor/create", method = RequestMethod.POST)
-    public String postCreateInstructor(@RequestParam Map<String, String> params) {
-        if (instructorService.create(params)) {
+    public String postCreateInstructor(Instructor instructor) {
+        if (instructorService.create(instructor)) {
             return "redirect:/admin/instructor/list";
         }
 
@@ -85,13 +88,13 @@ public class AdminController {
     /**
      * Aktualizuje wykładowcę
      *
-     * @param params przesłane parametry wykładowcy z formularza
+     * @param instructor przesłane parametry wykładowcy z formularza
      * @return przekierowanie do listy wykładowców, w przeciwnym wypadku do
      * strony błędu
      */
     @RequestMapping(value = "/admin/instructor/update", method = RequestMethod.POST)
-    public String postUpdateInstructor(@RequestParam Map<String, String> params) {
-        if (instructorService.update(params)) {
+    public String postUpdateInstructor(Instructor instructor) {
+        if (instructorService.update(instructor)) {
             return "redirect:/admin/instructor/list";
         }
 
@@ -125,13 +128,13 @@ public class AdminController {
     /**
      * Tworzy nowego studenta
      *
-     * @param params przesłane parametry studenta z formularza
+     * @param student przesłane parametry studenta z formularza
      * @return przekierowanie do listy studentów, w przeciwnym wypadku do strony
      * błędu
      */
     @RequestMapping(value = "/admin/student/create", method = RequestMethod.POST)
-    public String postCreateStudent(@RequestParam Map<String, String> params) {
-        if (studentService.create(params)) {
+    public String postCreateStudent(Student student) {
+        if (studentService.create(student)) {
             return "redirect:/admin/student/list";
         }
 
@@ -155,13 +158,13 @@ public class AdminController {
     /**
      * Aktualizuje studenta
      *
-     * @param params przesłane parametry studenta z formularza
+     * @param student przesłane parametry studenta z formularza
      * @return przekierowanie do listy studentaów, w przeciwnym wypadku do
      * strony błędu
      */
     @RequestMapping(value = "/admin/student/update", method = RequestMethod.POST)
-    public String postUpdateStudent(@RequestParam Map<String, String> params) {
-        if (studentService.update(params)) {
+    public String postUpdateStudent(Student student) {
+        if (studentService.update(student)) {
             return "redirect:/admin/student/list";
         }
 

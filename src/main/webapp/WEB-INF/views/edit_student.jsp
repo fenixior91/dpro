@@ -37,11 +37,11 @@
                                             <input id="password" name="password" type="password" class="form-control" value="${student.password}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="first_name">Imię</label>
+                                            <label for="firstName">Imię</label>
                                             <input id="first_name" name="firstName" type="text" class="form-control" value="${student.firstName}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="last_name">Nazwisko</label>
+                                            <label for="lastName">Nazwisko</label>
                                             <input id="last_name" name="lastName" type="text" class="form-control" value="${student.lastName}">
                                         </div>
                                         <div class="form-group">
@@ -49,7 +49,7 @@
                                             <input id="email" name="email" type="email" class="form-control" value="${student.email}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="date_of_birth">Data Urodzenia</label>
+                                            <label for="dateOfBirth">Data Urodzenia</label>
                                             <input id="date_of_birth" name="dateOfBirth" type="date" class="form-control" value="${student.dateOfBirth}">
                                         </div>
 

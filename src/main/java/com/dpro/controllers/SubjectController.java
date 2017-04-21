@@ -4,14 +4,14 @@ import com.dpro.services.SubjectService;
 import com.dpro.services.SubjectTypeService;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class SubjectController {
 
     @Autowired
@@ -81,12 +81,12 @@ public class SubjectController {
         return "redirect:/500";
     }
 
-    @RequestMapping(value = "/instructor/subjects", method = RequestMethod.GET)
+    @RequestMapping(value = "/instructor/subject/list", method = RequestMethod.GET)
     public String instructorSubjects(Model model) {
         return "subjects";
     }
 
-    @RequestMapping(value = "/student/subjects", method = RequestMethod.GET)
+    @RequestMapping(value = "/student/subject/list", method = RequestMethod.GET)
     public String stuentSubjects(Model model) {
         return "subjects";
     }

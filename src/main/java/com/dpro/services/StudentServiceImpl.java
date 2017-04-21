@@ -2,12 +2,10 @@ package com.dpro.services;
 
 import com.dpro.domains.Student;
 import com.dpro.repositories.StudentRepository;
-import com.dpro.utils.StudentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Serwis wspomagający manipulowaniem danymi studenta przed zmianą w bazie
@@ -43,26 +41,20 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
-     * @param params parametry studenta otrzymane z formularza, z których będą
-     * czerpane dane przy tworzeniu obiektu
+     * @param student parametry studenta otrzymane z formularza
      * @return wartość logiczna, czy dodawanie studenta powiodło się
      */
     @Override
-    public boolean create(Map<String, String> params) {
-        Student student = StudentUtil.generate(params);
-
+    public boolean create(Student student) {
         return studentRepository.create(student);
     }
 
     /**
-     * @param params parametry studenta otrzymane z formularza, z których będą
-     * czerpane dane przy tworzeniu obiketu
+     * @param student parametry studenta otrzymane z formularza
      * @return wartość logiczna, czy aktualizowanie studenta powiodło się
      */
     @Override
-    public boolean update(Map<String, String> params) {
-        Student student = StudentUtil.generate(params);
-
+    public boolean update(Student student) {
         return studentRepository.update(student);
     }
 }
