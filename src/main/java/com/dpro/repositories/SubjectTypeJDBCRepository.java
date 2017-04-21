@@ -29,16 +29,34 @@ public class SubjectTypeJDBCRepository implements SubjectTypeRepository {
         this.template = new JdbcTemplate(dataSource);
     }
 
-    @Override
-    public List<SubjectType> findAll() {
-        return template.query(SQL_FIND_ALL_QUERY, new SubjectTypeDBUtil.SubjectTypeRowMapper());
-    }
-
+    /**
+     * Odnajduje typ przedmiotu w bazie danych za pomocą id
+     *
+     * @param id identyfikator typu przedmiotu w bazie danych
+     * @return obiekt typu przedmiotu pobranego z bazy danych
+     */
     @Override
     public SubjectType findById(Long id) {
         return template.query(SQL_FIND_BY_ID_QUERY, new SubjectTypeDBUtil.SubjectTypeResultSetExtractor(), id);
     }
 
+    /**
+     * Odnajdue wszystkie typy przedmiotów w bazie danych
+     *
+     * @return lista typów przedmiotów
+     */
+    @Override
+    public List<SubjectType> findAll() {
+        return template.query(SQL_FIND_ALL_QUERY, new SubjectTypeDBUtil.SubjectTypeRowMapper());
+    }
+
+    /**
+     * Tworzy nowy typ przedmiotu
+     *
+     * @param subjectType obiekt typu przedmiotu, z którego będą czerpane dane
+     * przy zapisie w bazie
+     * @return wartość logiczna, czy dodawanie typu przedmiotu powiodło się
+     */
     @Override
     public boolean create(SubjectType subjectType) {
         return template.update(SQL_INSERT_QUERY, subjectType.getName()) > 0;

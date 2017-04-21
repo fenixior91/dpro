@@ -2,7 +2,6 @@ package com.dpro.repositories;
 
 import com.dpro.domains.Subject;
 import com.dpro.domains.SubjectType;
-import com.dpro.utils.SubjectTypeDBUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -62,16 +61,59 @@ public class SubjectJDBCRepository implements SubjectRepository {
         template = new JdbcTemplate(dataSource);
     }
 
-    @Override
-    public List<Subject> findAll() {
-        return template.query(SQL_FIND_ALL_QUERY, new SubjectRowMapper());
-    }
-
+    /**
+     * Odnajduje przedmiot w bazie danych za pomocą id
+     *
+     * @param id identyfikator przedmiotu w bazie danych
+     * @return obiekt przedmiotu pobranego z bazy danych
+     */
     @Override
     public Subject findById(Long id) {
         return template.query(SQL_FIND_BY_ID_QUERY, new SubjectResultSetExtractor(), id);
     }
 
+    /**
+     * Odnajdue wszystkie przedmioty w bazie danych
+     *
+     * @return lista przedmiotów
+     */
+    @Override
+    public List<Subject> findAll() {
+        return template.query(SQL_FIND_ALL_QUERY, new SubjectRowMapper());
+    }
+
+    /**
+     * Odnajduje wszystkie przedmioty przypisane do użytkownika(student |
+     * wykładowca)
+     *
+     * @param id identyfikator użytkownika w bazie danych
+     * @return lista przedmiotów przypisancyh do użytkownika
+     */
+    @Override
+    public List<Subject> findAllInUser(Long id) {
+        return template.query(SQL_FIND_ALL_IN_USER_QUERY, new SubjectRowMapper(), id);
+
+    }
+
+    /**
+     * Odnajduje wszystkie przedmioty, które nie są przypisane do
+     * użytkownika(student | wykładowca)
+     *
+     * @param id identyfikator użytkownika w bazie danych
+     * @return lista przedmiotów, które nie są przypisane do użytkownika
+     */
+    @Override
+    public List<Subject> findAllNotInUser(Long id) {
+        return template.query(SQL_FIND_ALL_NOT_IN_USER_QUERY, new SubjectRowMapper(), id);
+    }
+
+    /**
+     * Tworzy nowy przedmiot
+     *
+     * @param subject obiekt przedmiotu, z którego będą czerpane dane przy
+     * zapisie w bazie
+     * @return wartość logiczna, czy dodawanie przedmiotu powiodło się
+     */
     @Override
     public boolean create(Subject subject) {
         template.update(SQL_INSERT_QUERY,
@@ -81,6 +123,13 @@ public class SubjectJDBCRepository implements SubjectRepository {
         return true;
     }
 
+    /**
+     * Aktualizuje istniejący przedmiot w bazie danych
+     *
+     * @param subject obiekt przedmiotu, z którego będą czerpane dane przy
+     * aktualiacji w bazie
+     * @return wartość logiczna, czy aktualizowanie przzedmiotu powiodło się
+     */
     @Override
     public boolean update(Subject subject) {
         template.update(SQL_UPDATE_QUERY,
@@ -91,17 +140,13 @@ public class SubjectJDBCRepository implements SubjectRepository {
         return true;
     }
 
-    @Override
-    public List<Subject> findAllInUser(Long id) {
-        return template.query(SQL_FIND_ALL_IN_USER_QUERY, new SubjectRowMapper(), id);
-
-    }
-
-    @Override
-    public List<Subject> findAllNotInUser(Long id) {
-        return template.query(SQL_FIND_ALL_NOT_IN_USER_QUERY, new SubjectRowMapper(), id);
-    }
-
+    /**
+     * Przypisuje do użytkownika przedmiot w bazie dancych
+     *
+     * @param id identyfikator użytkownika
+     * @param subject przedmiot, który ma zostać przypisany użytkownikowi
+     * @return wartość logiczna, czy przypisywanie przedmiotu powiodło się
+     */
     @Override
     public boolean attachToUser(Long id, Subject subject) {
         template.update(SQL_ATTACH_SUBJECT_IN_USER_QUERY, id, subject.getId());
@@ -109,6 +154,13 @@ public class SubjectJDBCRepository implements SubjectRepository {
         return true;
     }
 
+    /**
+     * Przypisuje użytkownikowi przedmioty w bazie danych
+     *
+     * @param id identyfikator użytkownika
+     * @param subjects przedmioty, które mają zostać przypisane użytkownikowi
+     * @return wartość logiczna, czy przypisywanie przedmiotów powiodło się
+     */
     @Override
     public boolean attachToUser(Long id, List<Subject> subjects) {
         template.update(SQL_DETACH_SUBJECTS_IN_USER_QUERY, id);
@@ -117,7 +169,7 @@ public class SubjectJDBCRepository implements SubjectRepository {
         return true;
     }
 
-    public static Subject generate(ResultSet rs) throws SQLException {
+    private static Subject generate(ResultSet rs) throws SQLException {
         Subject subject = new Subject();
         subject.setId(rs.getLong(SUBJECT_ID_COLUMN));
         subject.setName(rs.getString(NAME_COLUMN));

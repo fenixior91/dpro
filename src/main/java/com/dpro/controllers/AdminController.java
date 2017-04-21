@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@Secured("ROLE_ADMIN")
 public class AdminController {
 
     @Autowired
@@ -30,7 +28,13 @@ public class AdminController {
     @Autowired
     StudentService studentService;
 
-    @RequestMapping(value = "/admin/instructors", method = RequestMethod.GET)
+    /**
+     * Lista wykładowców
+     *
+     * @param model model z którego będzie korzystać strona jsp
+     * @return strona jsp z listą wykładowców
+     */
+    @RequestMapping(value = "/admin/instructor/list", method = RequestMethod.GET)
     public String instructors(Model model) {
         List<Instructor> instructors = instructorService.findAll();
         model.addAttribute("instructors", instructors);
@@ -38,20 +42,39 @@ public class AdminController {
         return "instructors";
     }
 
+    /**
+     * Pobiera formularz do tworzenia wykładowcy
+     *
+     * @return strona jsp z formularzem tworzenia wykładwocy
+     */
     @RequestMapping(value = "/admin/instructor/create", method = RequestMethod.GET)
     public String getCreateInstructor() {
         return "create_instructor";
     }
 
+    /**
+     * Tworzy nowego wykładowcę
+     *
+     * @param params przesłane parametry wykładowcy z formularza
+     * @return przekierowanie do listy wykładowców, w przeciwnym wypadku do
+     * strony błędu
+     */
     @RequestMapping(value = "/admin/instructor/create", method = RequestMethod.POST)
     public String postCreateInstructor(@RequestParam Map<String, String> params) {
         if (instructorService.create(params)) {
-            return "redirect:/admin/instructors";
+            return "redirect:/admin/instructor/list";
         }
 
         return "redirect:/500";
     }
 
+    /**
+     * Pobiera formularz do aktualizacji wykładowcy
+     *
+     * @param id identyfikator wykładowcy
+     * @param model model z którego będzie korzystać strona jsp
+     * @return strona jsp z formularzem aktualizacji wykładowcy
+     */
     @RequestMapping(value = "/admin/instructor/edit/{id}", method = RequestMethod.GET)
     public String getEditInstructor(@PathVariable Long id, Model model) {
         model.addAttribute("instructor", instructorService.findById(id));
@@ -59,16 +82,29 @@ public class AdminController {
         return "edit_instructor";
     }
 
+    /**
+     * Aktualizuje wykładowcę
+     *
+     * @param params przesłane parametry wykładowcy z formularza
+     * @return przekierowanie do listy wykładowców, w przeciwnym wypadku do
+     * strony błędu
+     */
     @RequestMapping(value = "/admin/instructor/update", method = RequestMethod.POST)
     public String postUpdateInstructor(@RequestParam Map<String, String> params) {
         if (instructorService.update(params)) {
-            return "redirect:/admin/instructors";
+            return "redirect:/admin/instructor/list";
         }
 
         return "redirect:/500";
     }
 
-    @RequestMapping(value = "/admin/students", method = RequestMethod.GET)
+    /**
+     * Lista studentów
+     *
+     * @param model model z którego będzie korzystać strona jsp
+     * @return strona jsp z listą studentów
+     */
+    @RequestMapping(value = "/admin/student/list", method = RequestMethod.GET)
     public String students(Model model) {
         List<Student> students = studentService.findAll();
         model.addAttribute("students", students);
@@ -76,20 +112,39 @@ public class AdminController {
         return "students";
     }
 
+    /**
+     * Pobiera formularz do tworzenia studenta
+     *
+     * @return strona jsp z formularzem tworzenia studenta
+     */
     @RequestMapping(value = "/admin/student/create", method = RequestMethod.GET)
     public String getCreateStudent() {
         return "create_student";
     }
 
+    /**
+     * Tworzy nowego studenta
+     *
+     * @param params przesłane parametry studenta z formularza
+     * @return przekierowanie do listy studentów, w przeciwnym wypadku do strony
+     * błędu
+     */
     @RequestMapping(value = "/admin/student/create", method = RequestMethod.POST)
     public String postCreateStudent(@RequestParam Map<String, String> params) {
         if (studentService.create(params)) {
-            return "redirect:/admin/students";
+            return "redirect:/admin/student/list";
         }
 
         return "redirect:/500";
     }
 
+    /**
+     * Pobiera formularz do aktualizacji studenta
+     *
+     * @param id identyfikator studenta
+     * @param model model z którego będzie korzystać strona jsp
+     * @return strona jsp z formularzem aktualizacji studenta
+     */
     @RequestMapping(value = "/admin/student/edit/{id}", method = RequestMethod.GET)
     public String getEditStudent(@PathVariable Long id, Model model) {
         model.addAttribute("student", studentService.findById(id));
@@ -97,15 +152,27 @@ public class AdminController {
         return "edit_student";
     }
 
+    /**
+     * Aktualizuje studenta
+     *
+     * @param params przesłane parametry studenta z formularza
+     * @return przekierowanie do listy studentaów, w przeciwnym wypadku do
+     * strony błędu
+     */
     @RequestMapping(value = "/admin/student/update", method = RequestMethod.POST)
     public String postUpdateStudent(@RequestParam Map<String, String> params) {
         if (studentService.update(params)) {
-            return "redirect:/admin/students";
+            return "redirect:/admin/student/list";
         }
 
         return "redirect:/500";
     }
 
+    /**
+     * Strona główna panelu administracyjnego
+     *
+     * @return strona jsp strony głównej panelu administracyjnego
+     */
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String index() {
         return "admin";

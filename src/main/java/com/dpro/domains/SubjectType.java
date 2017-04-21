@@ -1,13 +1,20 @@
 package com.dpro.domains;
 
 public class SubjectType {
+
     private Long id;
     private String name;
 
+    /**
+     * @return identyfikator typu przedmiotu
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @return nazwa typu przedmiotu
+     */
     public String getName() {
         return name;
     }

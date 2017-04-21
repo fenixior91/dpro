@@ -8,26 +8,47 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Serwis wspomagający manipulowaniem danymi typu przedmiotu przed zmianą w
+ * bazie danych
+ *
+ * @author Tomasz Truszkowski
+ */
 @Service
 public class SubjectTypeServiceImpl implements SubjectTypeService {
 
     @Autowired
     SubjectTypeRepository subjectTypeRepository;
-    
-    @Override
-    public List<SubjectType> findAll() {
-        return subjectTypeRepository.findAll();
-    }
 
+    /**
+     * @param id identyfikator typu przedmiotu w bazie danych
+     * @return obiekt typu przedmiotu pobranego z bazy danych
+     */
     @Override
     public SubjectType findById(Long id) {
         return subjectTypeRepository.findById(id);
     }
 
+    /**
+     * Odnajdue wszystkie typy przedmiotów w bazie danych
+     *
+     * @return lista typów przedmiotów
+     */
+    @Override
+    public List<SubjectType> findAll() {
+        return subjectTypeRepository.findAll();
+    }
+
+    /**
+     *
+     * @param params parametry typu przedmiotu otrzymane z formularza, z których
+     * będą czerpane dane przy tworzeniu obiektu
+     * @return wartość logiczna, czy dodawanie typu przedmiotu powiodło się
+     */
     @Override
     public boolean create(Map<String, String> params) {
         SubjectType subjectType = SubjectTypeUtil.generate(params);
-        
+
         return subjectTypeRepository.create(subjectType);
     }
 }

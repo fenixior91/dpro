@@ -22,5 +22,4 @@ public interface UserRepository {
             + ENABLED_COLUMN + " = ?," + EMAIL_COLUMN + " = ?,\n"
             + DATE_OF_BIRTH_COLUMN + " = ?, " + PESEL_COLUMN + " = ?\n"
             + "WHERE " + USER_ID_COLUMN + " = ?";
-
 }

@@ -13,39 +13,66 @@ public class User {
     private String email;
     private Date dateOfBirth;
     private String pesel;
-
+    
+    /**
+     * @return identyfikator użytkownika
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * @return nazwa użytkownika
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * @return hasło
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * @return wartość logiczna, informująca, czy użytkownik jest aktywny
+     */
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * @return adres e-mail
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * @return imię
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * @return nazwisko
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * @return data urodzenia
+     */
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
+    /**
+     * @return pesel
+     */
     public String getPesel() {
         return pesel;
     }

@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface SubjectTypeRepository {
 
-    List<SubjectType> findAll();
-
     SubjectType findById(Long id);
+
+    List<SubjectType> findAll();
 
     boolean create(SubjectType subjectType);
 }

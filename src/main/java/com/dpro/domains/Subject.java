@@ -8,22 +8,37 @@ public class Subject {
     private int hours;
     private SubjectType subjectType;
 
+    /**
+     * @return identyfikator przedmiotu
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * @return nazwa przedmiotu
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return punkty ects
+     */
     public int getEcts() {
         return ects;
     }
 
+    /**
+     * @return liczba godzin
+     */
     public int getHours() {
         return hours;
     }
 
+    /**
+     * @return typ przedmiotu
+     */
     public SubjectType getSubjectType() {
         return subjectType;
     }

@@ -1,6 +1,5 @@
 package com.dpro.api;
 
-import com.dpro.api.wrappers.SubjectWrapper;
 import com.dpro.domains.Instructor;
 import com.dpro.domains.Subject;
 import com.dpro.services.InstructorService;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api")
-public class InstructorAPI extends AbstractAPI {
+public class InstructorAPI {
 
     @Autowired
     InstructorService instructorService;
@@ -59,7 +58,7 @@ public class InstructorAPI extends AbstractAPI {
     @ResponseBody
     public ResponseEntity<Map<String, String>> attach(@PathVariable Long id, @RequestBody List<Subject> subjects) {
         subjectService.attachToUser(id, subjects);
-        
+
         Map<String, String> result = new HashMap<>();
         result.put("status", "ok");
         result.put("code", "200");

@@ -69,11 +69,6 @@
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <i class="fa fa-circle-o"></i> <span>Kierunki</span>
-                </a>
-            </li>
-            <li>
                 <a href="<c:url value='/admin/subject/list'/>">
                     <i class="fa fa-circle-o"></i> <span>Przedmioty</span>
                 </a>

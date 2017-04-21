@@ -42,18 +42,35 @@ public class StudentJDBCRepository implements StudentRepository {
         this.template = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * Odnajduje studenta w bazie danych za pomocą id
+     * 
+     * @param id ientyfikator studenta
+     * @return obiekt studenta pobranego z bazy danych
+     */
     @Override
     public Student findById(Long id) {
         Student student = template.query(SQL_FIND_BY_ID_QUERY, new StudentResultSetExtractor(), id);
         return student;
     }
 
+    /**
+     * Odnajduje wszystkich studentów w bazie danych
+     * 
+     * @return lista studentów
+     */
     @Override
     public List<Student> findAll() {
         List<Student> students = template.query(SQL_FIND_ALL_QUERY, new StudentRowMapper());
         return students;
     }
 
+    /**
+     * Tworzy nowego studenta
+     * 
+     * @param student obiekt studenta, z którego będą czerpane dane przy zapisie w bazie
+     * @return wartość logiczna, czy dodawanie studenta powiodło się
+     */
     @Override
     public boolean create(Student student) {
         template.update(SQL_INSERT_ROLE_QUERY, student.getUsername());
@@ -68,6 +85,12 @@ public class StudentJDBCRepository implements StudentRepository {
         return true;
     }
 
+    /**
+     * Aktualizuje istniejącego studenta w bazie danych
+     * 
+     * @param student obket studenta, z którego będą czerpane dane przy aktualizacji w bazie
+     * @return wartość logiczna, czy aktualizowanie studenta powiodło się
+     */
     @Override
     public boolean update(Student student) {
         System.out.println("UPDATE STUDENT");

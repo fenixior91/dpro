@@ -38,6 +38,74 @@ public class InstructorJDBCRepository implements InstructorRepository {
             = "UPDATE instructor SET " + SCIENCE_DEGREE_COLUMN + " = ?\n"
             + "WHERE " + USER_ID_COLUMN + " = ?";
 
+    public InstructorJDBCRepository(DataSource dataSource) {
+        this.template = new JdbcTemplate(dataSource);
+    }
+
+    /**
+     * Odnajduje wykładowcę w bazie danych za pomocą identyfikatora
+     *
+     * @param id ientyfikator wykładowcy
+     * @return obiekt wykładowcy pobranego z bazy danych
+     */
+    @Override
+    public Instructor findById(Long id) {
+        return template.query(SQL_FIND_BY_ID_QUERY, new InstructorResultSetExtractor(), id);
+    }
+
+    /**
+     * Odnajduje wszystkich wykładowców w bazie danych
+     *
+     * @return lista wykładowców
+     */
+    @Override
+    public List<Instructor> findAll() {
+        return template.query(SQL_FIND_ALL_QUERY, new InstructorRowMapper());
+    }
+
+    /**
+     * Tworzy nowego wykładowcę
+     *
+     * @param instructor obiekt wykładowcy, z którego będą czerpane dane przy
+     * zapisie w bazie
+     * @return wartość logiczna, czy dodawanie wykładowcy powiodło się
+     */
+    @Override
+    public boolean create(Instructor instructor) {
+        template.update(SQL_INSERT_ROLE_QUERY, instructor.getUsername());
+
+        template.update(SQL_INSERT_USER_QUERY,
+                instructor.getUsername(), instructor.getPassword(),
+                instructor.getFirstName(), instructor.getLastName(),
+                instructor.getEmail(), instructor.getDateOfBirth(), instructor.getPesel());
+
+        template.update(SQL_INSERT_INSTRUCTOR_QUERY, instructor.getScienceDegree());
+
+        return true;
+    }
+
+    /**
+     * Aktualizuje istniejącego studenta w bazie danych
+     *
+     * @param instructor obket wykładowcy, z którego będą czerpane dane przy
+     * aktualizacji w bazie
+     * @return wartość logiczna, czy aktualizowanie wykładowcy powiodło się
+     */
+    @Override
+    public boolean update(Instructor instructor) {
+        template.update(SQL_UPDATE_USER_QUERY,
+                instructor.getUsername(), instructor.getPassword(),
+                instructor.getFirstName(), instructor.getLastName(),
+                instructor.isEnabled(), instructor.getEmail(),
+                instructor.getDateOfBirth(), instructor.getPesel(), instructor.getId());
+
+        template.update(SQL_UPDATE_INSTRUCTOR_QUERY,
+                instructor.getScienceDegree(),
+                instructor.getId());
+
+        return true;
+    }
+
     private static Instructor generate(ResultSet rs) throws SQLException {
         Instructor instructor = new Instructor();
 
@@ -56,7 +124,7 @@ public class InstructorJDBCRepository implements InstructorRepository {
         return instructor;
     }
 
-    public static class InstructorRowMapper implements RowMapper<Instructor> {
+    private static class InstructorRowMapper implements RowMapper<Instructor> {
 
         @Override
         public Instructor mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -64,7 +132,7 @@ public class InstructorJDBCRepository implements InstructorRepository {
         }
     }
 
-    public static class InstructorResultSetExtractor implements ResultSetExtractor<Instructor> {
+    private static class InstructorResultSetExtractor implements ResultSetExtractor<Instructor> {
 
         @Override
         public Instructor extractData(ResultSet resultSet) throws SQLException, DataAccessException {
@@ -74,48 +142,5 @@ public class InstructorJDBCRepository implements InstructorRepository {
 
             return null;
         }
-    }
-
-    public InstructorJDBCRepository(DataSource dataSource) {
-        this.template = new JdbcTemplate(dataSource);
-    }
-
-    @Override
-    public Instructor findById(Long id) {
-        return template.query(SQL_FIND_BY_ID_QUERY, new InstructorResultSetExtractor(), id);
-    }
-
-    @Override
-    public List<Instructor> findAll() {
-        return template.query(SQL_FIND_ALL_QUERY, new InstructorRowMapper());
-    }
-
-    @Override
-    public boolean create(Instructor instructor) {
-        template.update(SQL_INSERT_ROLE_QUERY, instructor.getUsername());
-        
-        template.update(SQL_INSERT_USER_QUERY,
-                instructor.getUsername(), instructor.getPassword(),
-                instructor.getFirstName(), instructor.getLastName(),
-                instructor.getEmail(), instructor.getDateOfBirth(), instructor.getPesel());
-        
-        template.update(SQL_INSERT_INSTRUCTOR_QUERY, instructor.getScienceDegree());
-
-        return true;
-    }
-
-    @Override
-    public boolean update(Instructor instructor) {
-        template.update(SQL_UPDATE_USER_QUERY,
-                instructor.getUsername(), instructor.getPassword(),
-                instructor.getFirstName(), instructor.getLastName(),
-                instructor.isEnabled(), instructor.getEmail(),
-                instructor.getDateOfBirth(), instructor.getPesel(), instructor.getId());
-
-        template.update(SQL_UPDATE_INSTRUCTOR_QUERY,
-                instructor.getScienceDegree(),
-                instructor.getId());
-
-        return true;
     }
 }

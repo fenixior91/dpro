@@ -8,7 +8,6 @@ public interface StudentRepository extends UserRepository {
 
     public static final String ID_COLUMN = "student_id";
     public static final String ALBUM_COLUMN = "album";
-    public static final String USER_ID_COLUMN = "user_id";
     public static final String ROLE = "ROLE_STUDENT";
 
     Student findById(Long id);
