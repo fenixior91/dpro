@@ -79,41 +79,31 @@
                                     <h3 class="box-title">Przypisz Przedmioty</h3>
                                 </div>
 
-                                <form role="form" method="post" action="<c:url value='/admin/instructor/attach_subjects'/>" autocomplete="off">
+                                <form id="attach_subject" role="form" autocomplete="off">
                                     <div class="box-body">
-                                        <div class="form-group">
-                                            <label for="username">Login</label>
-                                            <input id="username" name="username" type="text" class="form-control" value=""> 
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="password">Hasło</label>
-                                            <input id="password" name="password" type="password" class="form-control" value="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="first_name">Imię</label>
-                                            <input id="first_name" name="first_name" type="text" class="form-control" value="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="last_name">Nazwisko</label>
-                                            <input id="last_name" name="last_name" type="text" class="form-control" value="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input id="email" name="email" type="email" class="form-control" value="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="date_of_birth">Data Urodzenia</label>
-                                            <input id="date_of_birth" type="date" class="form-control" value="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="science_degree">Stopień naukowy</label>
-                                            <input id="science_degree" name="science_degree" type="text" class="form-control" value="">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-xs-6">
+                                                    <div id="student-dd" class="dd">
+                                                        <ol id="student-dd-list" class="dd-list">
+                                                        </ol>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-xs-6">
+                                                    <div id="subject-dd" class="dd">
+                                                        <ol id="subject-dd-list" class="dd-list">
+                                                        </ol>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-success">Dodaj</button>
+                                            <button type="submit" class="btn btn-success">Aktualizuj</button>
                                         </div>
                                     </div>
                                 </form>						
@@ -125,5 +115,6 @@
         </div>
 
         <%@include file="js-include.jsp"%>
+        <script src="<c:url value='/static/js/app/student/edit.js'/>"></script>
     </body>
 </html>

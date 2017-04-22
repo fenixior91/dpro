@@ -1,7 +1,7 @@
 package com.dpro.api;
 
-import com.dpro.domains.Instructor;
-import com.dpro.services.InstructorService;
+import com.dpro.domains.Student;
+import com.dpro.services.StudentService;
 import com.dpro.services.SubjectService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Tomasz Truszkowski
  */
 @RestController
+
 @RequestMapping(value = "/api")
-public class InstructorAPI {
+public class StudentAPI {
 
     @Autowired
-    InstructorService instructorService;
+    StudentService studentService;
 
     @Autowired
     SubjectService subjectService;
@@ -32,9 +33,9 @@ public class InstructorAPI {
      *
      * @return lista wykadowców w formacie JSON
      */
-    @GetMapping("/instructor/list")
-    public List<Instructor> getInstructors() {
-        return instructorService.findAll();
+    @GetMapping("/student/list")
+    public List<Student> getStudents() {
+        return studentService.findAll();
     }
 
     /**
@@ -44,14 +45,14 @@ public class InstructorAPI {
      * @param id identyfikator wykładowcy
      * @return obiekt wykładowcy w formacie JSON
      */
-    @GetMapping("/instructor/{id}")
-    public ResponseEntity<Instructor> getInstructor(@PathVariable Long id) {
-        Instructor instructor = instructorService.findById(id);
+    @GetMapping("/student/{id}")
+    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
+        Student student = studentService.findById(id);
 
-        if (instructor == null) {
+        if (student == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(instructor, HttpStatus.OK);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
 }
