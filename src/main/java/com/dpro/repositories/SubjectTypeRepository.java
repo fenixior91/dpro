@@ -8,6 +8,4 @@ public interface SubjectTypeRepository {
     SubjectType findById(Long id);
 
     List<SubjectType> findAll();
-
-    boolean create(SubjectType subjectType);
 }

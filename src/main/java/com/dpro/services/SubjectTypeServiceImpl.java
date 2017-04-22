@@ -2,9 +2,7 @@ package com.dpro.services;
 
 import com.dpro.domains.SubjectType;
 import com.dpro.repositories.SubjectTypeRepository;
-import com.dpro.utils.SubjectTypeUtil;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,18 +35,5 @@ public class SubjectTypeServiceImpl implements SubjectTypeService {
     @Override
     public List<SubjectType> findAll() {
         return subjectTypeRepository.findAll();
-    }
-
-    /**
-     *
-     * @param params parametry typu przedmiotu otrzymane z formularza, z których
-     * będą czerpane dane przy tworzeniu obiektu
-     * @return wartość logiczna, czy dodawanie typu przedmiotu powiodło się
-     */
-    @Override
-    public boolean create(Map<String, String> params) {
-        SubjectType subjectType = SubjectTypeUtil.generate(params);
-
-        return subjectTypeRepository.create(subjectType);
     }
 }

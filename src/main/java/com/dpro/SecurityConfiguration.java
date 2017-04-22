@@ -9,6 +9,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import static com.dpro.utils.DatabaseColumns.*;
+import static com.dpro.utils.DatabaseTables.*;
+
+/**
+ * Konfiguracja Spring Security
+ *
+ * @author Tomasz Truszkowski
+ */
 @Configuration
 @EnableWebSecurity
 @Import(WebAppConfiguration.class)
@@ -20,11 +28,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomSuccessHandler customSuccessHandler;
 
+    private static final String SELECT_USER_QERY
+            = "SELECT " + USER_NAME_COLUMN + ", " + USER_PASSWORD_COLUMN + ", " + USER_ENABLED_COLUMN + "\n"
+            + "FROM " + USERS_TABLE + "\n"
+            + "WHERE " + USER_NAME_COLUMN + "= ?";
+
+    private static final String SELECT_ROLE_QUERY
+            = "SELECT " + USER_NAME_COLUMN + ", " + ROLES_ROLE_COLUMN + "\n"
+            + "FROM " + ROLES_TABLE + "\n"
+            + "WHERE " + USER_NAME_COLUMN + " = ?";
+
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select username, password, enabled from user where username=?")
-                .authoritiesByUsernameQuery("select username, role from roles where username=?");
+                .usersByUsernameQuery(SELECT_USER_QERY)
+                .authoritiesByUsernameQuery(SELECT_ROLE_QUERY);
 
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
     }

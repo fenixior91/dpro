@@ -14,73 +14,61 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 /**
+ * Jakie ma zostać wykonane żądanie po pomyślym zalogowaniu się do systemu.
  *
- * @author Tomasz Truszkowski <tomasz.truszkowski2013@gmail.com>
+ * @author Tomasz Truszkowski
  */
-
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException {
-		String targetUrl = determineTargetUrl(authentication);
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException {
+        String targetUrl = determineTargetUrl(authentication);
 
-		redirectStrategy.sendRedirect(request, response, targetUrl);
-	}
+        redirectStrategy.sendRedirect(request, response, targetUrl);
+    }
 
-	private String determineTargetUrl(Authentication authentication) {
-		String url = "";
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		List<String> roles = new ArrayList<String>();
+    private String determineTargetUrl(Authentication authentication) {
+        String url = "";
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<>();
 
-		for (GrantedAuthority authority : authorities) {
-			roles.add(authority.getAuthority());
-		}
+        authorities.forEach((authority) -> {
+            roles.add(authority.getAuthority());
+        });
 
-		if (isAdmin(roles)) {
-			url = "/admin";
-		} else if (isInstructor(roles)) {
-			url = "/instructor";
-		} else if (isStudent(roles)) {
-			url = "/student";
-		}
+        if (isAdmin(roles)) {
+            url = "/admin";
+        } else if (isInstructor(roles)) {
+            url = "/instructor";
+        } else if (isStudent(roles)) {
+            url = "/student";
+        }
 
-		return url;
-	}
+        return url;
+    }
 
-	private boolean isAdmin(List<String> roles) {
-		if (roles.contains("ROLE_ADMIN")) {
-			return true;
-		}
+    private boolean isAdmin(List<String> roles) {
+        return roles.contains("ROLE_ADMIN");
+    }
 
-		return false;
-	}
+    private boolean isInstructor(List<String> roles) {
+        return roles.contains("ROLE_INSTRUCTOR");
+    }
 
-	private boolean isInstructor(List<String> roles) {
-		if (roles.contains("ROLE_INSTRUCTOR")) {
-			return true;
-		}
+    private boolean isStudent(List<String> roles) {
+        return roles.contains("ROLE_STUDENT");
+    }
 
-		return false;
-	}
+    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
+        this.redirectStrategy = redirectStrategy;
+    }
 
-	private boolean isStudent(List<String> roles) {
-		if (roles.contains("ROLE_STUDENT")) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-		this.redirectStrategy = redirectStrategy;
-	}
-
-	public RedirectStrategy getRedirectStrategy() {
-		return redirectStrategy;
-	}
+    public RedirectStrategy getRedirectStrategy() {
+        return redirectStrategy;
+    }
 
 }

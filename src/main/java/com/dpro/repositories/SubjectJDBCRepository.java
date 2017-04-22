@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import static com.dpro.utils.DatabaseColumns.*;
+import static com.dpro.utils.DatabaseTables.*;
 
 @Repository
 public class SubjectJDBCRepository implements SubjectRepository {
@@ -20,43 +21,43 @@ public class SubjectJDBCRepository implements SubjectRepository {
     private final JdbcTemplate template;
 
     private static final String SQL_FIND_ALL_QUERY
-            = "SELECT * FROM subject s\n"
-            + "INNER JOIN subject_type st ON s." + SUBJECT_TYPE_ID_COLUMN + " = st." + SUBJECT_TYPE_ID_COLUMN;
+            = "SELECT * FROM " + SUBJECTS_TABLE + " s\n"
+            + "INNER JOIN " + SUBJECT_TYPES_TABLE + " st ON s." + SUBJECT_TYPE_ID_COLUMN + " = st." + SUBJECT_TYPE_ID_COLUMN;
 
     private static final String SQL_FIND_BY_ID_QUERY
-            = "SELECT * FROM subject s\n"
-            + "INNER JOIN subject_type st ON s." + SUBJECT_TYPE_ID_COLUMN + " = st." + SUBJECT_TYPE_ID_COLUMN + "\n"
+            = "SELECT * FROM " + SUBJECTS_TABLE + " s\n"
+            + "INNER JOIN " + SUBJECT_TYPES_TABLE + " st ON s." + SUBJECT_TYPE_ID_COLUMN + " = st." + SUBJECT_TYPE_ID_COLUMN + "\n"
             + " WHERE s." + SUBJECT_TYPE_ID_COLUMN + " = ?";
 
     private static final String SQL_INSERT_QUERY
-            = "INSERT INTO subject(" + SUBJECT_NAME_COLUMN + ", " + SUBJECT_ECTS_COLUMN + ", " + SUBJECT_HOURS_COLUMN + ", " + SUBJECT_TYPE_ID_COLUMN + ")\n"
+            = "INSERT INTO " + SUBJECTS_TABLE + "(" + SUBJECT_NAME_COLUMN + ", " + SUBJECT_ECTS_COLUMN + ", " + SUBJECT_HOURS_COLUMN + ", " + SUBJECT_TYPE_ID_COLUMN + ")\n"
             + "VALUES(?, ?, ?, ?)";
 
     private static final String SQL_UPDATE_QUERY
-            = "UPDATE subject\n"
+            = "UPDATE " + SUBJECTS_TABLE + "\n"
             + "SET " + SUBJECT_NAME_COLUMN + " = ?, " + SUBJECT_ECTS_COLUMN + " = ?, " + SUBJECT_HOURS_COLUMN + " = ?, " + SUBJECT_TYPE_ID_COLUMN + " = ?\n"
             + "WHERE " + SUBJECT_ID_COLUMN + " = ?\n";
 
     private static final String SQL_FIND_ALL_IN_USER_QUERY
             = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + SUBJECT_NAME_COLUMN + ", s." + SUBJECT_ECTS_COLUMN + ", s." + SUBJECT_HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st." + SUBJECT_TYPE_NAME_COLUMN + "\n"
-            + "FROM user u\n"
-            + "INNER JOIN user_subject us ON u." + USER_ID_COLUMN + " = us." + USER_ID_COLUMN + " AND us." + USER_ID_COLUMN + " = ?\n"
-            + "INNER JOIN subject s ON s." + SUBJECT_ID_COLUMN + " = us." + SUBJECT_ID_COLUMN + "\n"
-            + "INNER JOIN subject_type st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN;
+            + "FROM " + USERS_TABLE + " u\n"
+            + "INNER JOIN " + USERS_SUBJECTS_TABLE + " us ON u." + USER_ID_COLUMN + " = us." + USER_ID_COLUMN + " AND us." + USER_ID_COLUMN + " = ?\n"
+            + "INNER JOIN " + SUBJECTS_TABLE + " s ON s." + SUBJECT_ID_COLUMN + " = us." + SUBJECT_ID_COLUMN + "\n"
+            + "INNER JOIN " + SUBJECT_TYPES_TABLE + " st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN;
 
     private static final String SQL_FIND_ALL_NOT_IN_USER_QUERY
             = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + SUBJECT_NAME_COLUMN + ", s." + SUBJECT_ECTS_COLUMN + ", s." + SUBJECT_HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st. " + SUBJECT_TYPE_NAME_COLUMN + "\n"
-            + "FROM subject s\n"
-            + "INNER JOIN subject_type st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN + "\n"
+            + "FROM " + SUBJECTS_TABLE + " s\n"
+            + "INNER JOIN " + SUBJECT_TYPES_TABLE + " st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN + "\n"
             + "WHERE s." + SUBJECT_ID_COLUMN + " NOT IN\n"
-            + "(SELECT us." + SUBJECT_ID_COLUMN + " FROM user_subject us WHERE us." + USER_ID_COLUMN + " = ?)";
+            + "(SELECT us." + SUBJECT_ID_COLUMN + " FROM " + USERS_SUBJECTS_TABLE + " us WHERE us." + USER_ID_COLUMN + " = ?)";
 
     private static final String SQL_DETACH_SUBJECTS_IN_USER_QUERY
-            = "DELETE FROM user_subject\n"
+            = "DELETE FROM " + USERS_SUBJECTS_TABLE + "\n"
             + "WHERE " + USER_ID_COLUMN + " = ?";
 
     private static final String SQL_ATTACH_SUBJECT_IN_USER_QUERY
-            = "INSERT INTO user_subject(" + USER_ID_COLUMN + ", " + SUBJECT_ID_COLUMN + ")\n"
+            = "INSERT INTO " + USERS_SUBJECTS_TABLE + "(" + USER_ID_COLUMN + ", " + SUBJECT_ID_COLUMN + ")\n"
             + "VALUES(?, ?)";
 
     public SubjectJDBCRepository(DataSource dataSource) {

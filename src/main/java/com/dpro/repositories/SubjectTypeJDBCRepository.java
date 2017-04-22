@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import static com.dpro.utils.DatabaseColumns.*;
+import static com.dpro.utils.DatabaseTables.*;
 
 @Repository
 public class SubjectTypeJDBCRepository implements SubjectTypeRepository {
@@ -19,17 +20,10 @@ public class SubjectTypeJDBCRepository implements SubjectTypeRepository {
     private final JdbcTemplate template;
 
     private static final String SQL_FIND_ALL_QUERY
-            = "SELECT * FROM subject_type";
+            = "SELECT * FROM " + SUBJECT_TYPES_TABLE;
 
-    private static final String SQL_FIND_BY_ID_PATTERN
-            = "SELECT * FROM subject_type WHERE %s = ?";
     private static final String SQL_FIND_BY_ID_QUERY
-            = String.format(SQL_FIND_BY_ID_PATTERN, SUBJECT_TYPE_ID_COLUMN);
-
-    private static final String SQL_INSERT_PATTERN
-            = "INSERT INTO subject_type(%s) VALUES(?)";
-    private static final String SQL_INSERT_QUERY
-            = String.format(SQL_INSERT_PATTERN, SUBJECT_TYPE_NAME_COLUMN);
+            = "SELECT * FROM " + SUBJECT_TYPES_TABLE + " WHERE " + SUBJECT_TYPE_ID_COLUMN + " = ?";
 
     public SubjectTypeJDBCRepository(DataSource dataSource) {
         this.template = new JdbcTemplate(dataSource);
@@ -54,18 +48,6 @@ public class SubjectTypeJDBCRepository implements SubjectTypeRepository {
     @Override
     public List<SubjectType> findAll() {
         return template.query(SQL_FIND_ALL_QUERY, new SubjectTypeRowMapper());
-    }
-
-    /**
-     * Tworzy nowy typ przedmiotu
-     *
-     * @param subjectType obiekt typu przedmiotu, z którego będą czerpane dane
-     * przy zapisie w bazie
-     * @return wartość logiczna, czy dodawanie typu przedmiotu powiodło się
-     */
-    @Override
-    public boolean create(SubjectType subjectType) {
-        return template.update(SQL_INSERT_QUERY, subjectType.getName()) > 0;
     }
 
     private static SubjectType generate(ResultSet rs) throws SQLException {

@@ -72,15 +72,6 @@ public class SubjectController {
         return "create_subject_type";
     }
 
-    @RequestMapping(value = "/admin/subject_type/create", method = RequestMethod.POST)
-    public String postCreateSubjectType(@RequestParam Map<String, String> params) {
-        if (subjectTypeService.create(params)) {
-            return "redirect:/admin/subject/list";
-        }
-
-        return "redirect:/500";
-    }
-
     @RequestMapping(value = "/instructor/subject/list", method = RequestMethod.GET)
     public String instructorSubjects(Model model) {
         return "subjects";

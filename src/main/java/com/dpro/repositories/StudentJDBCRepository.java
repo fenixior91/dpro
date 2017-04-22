@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
 import static com.dpro.utils.DatabaseColumns.*;
+import static com.dpro.utils.DatabaseTables.*;
 
 @Repository
 public class StudentJDBCRepository implements StudentRepository {
@@ -20,32 +21,32 @@ public class StudentJDBCRepository implements StudentRepository {
     private final JdbcTemplate template;
 
     private static final String SQL_FIND_BY_ID_QUERY
-            = "SELECT * FROM user u\n"
-            + "INNER JOIN student s ON u." + USER_ID_COLUMN + " = s." + USER_ID_COLUMN + "\n"
+            = "SELECT * FROM " + USERS_TABLE + " u\n"
+            + "INNER JOIN " + STUDENTS_TABLE + " s ON u." + USER_ID_COLUMN + " = s." + USER_ID_COLUMN + "\n"
             + "WHERE u." + USER_ID_COLUMN + " = ?";
 
     private static final String SQL_FIND_ALL_QUERY
-            = "SELECT * FROM user u\n"
-            + "INNER JOIN student s ON u." + USER_ID_COLUMN + " = s." + USER_ID_COLUMN;
+            = "SELECT * FROM " + USERS_TABLE + " u\n"
+            + "INNER JOIN " + STUDENTS_TABLE + " s ON u." + USER_ID_COLUMN + " = s." + USER_ID_COLUMN;
 
     private static final String SQL_INSERT_ROLE_QUERY
-            = "INSERT INTO roles(" + USER_NAME_COLUMN + ", " + ROLES_ROLE_COLUMN + ")\n"
+            = "INSERT INTO " + ROLES_TABLE + "(" + USER_NAME_COLUMN + ", " + ROLES_ROLE_COLUMN + ")\n"
             + "VALUES(?, '" + STUDENT_ROLE + "')";
 
     private static final String SQL_INSERT_STUDENT_QUERY
-            = "INSERT INTO student(" + ALBUM_COLUMN + ", " + USER_ID_COLUMN + ")\n"
-            + "VALUES(?, (SELECT MAX(" + USER_ID_COLUMN + ") FROM user))";
+            = "INSERT INTO " + STUDENTS_TABLE + "(" + ALBUM_COLUMN + ", " + USER_ID_COLUMN + ")\n"
+            + "VALUES(?, (SELECT MAX(" + USER_ID_COLUMN + ") FROM " + USERS_TABLE + "))";
 
     private static final String SQL_UPDATE_STUDENT_QUERY
-            = "UPDATE student SET " + ALBUM_COLUMN + " = ?\n"
+            = "UPDATE " + STUDENTS_TABLE + " SET " + ALBUM_COLUMN + " = ?\n"
             + "WHERE " + USER_ID_COLUMN + " = ?";
 
     private static final String SQL_INSERT_USER_QUERY
-            = "INSERT INTO user(" + USER_NAME_COLUMN + ", " + USER_PASSWORD_COLUMN + ", " + USER_FIRST_NAME_COLUMN + ", " + USER_LAST_NAME_COLUMN + ", " + USER_ENABLED_COLUMN + ", " + USER_EMAIL_COLUMN + ", " + USER_DATE_OF_BIRTH_COLUMN + ", " + USER_PESEL_COLUMN + ")\n"
+            = "INSERT INTO " + USERS_TABLE + "(" + USER_NAME_COLUMN + ", " + USER_PASSWORD_COLUMN + ", " + USER_FIRST_NAME_COLUMN + ", " + USER_LAST_NAME_COLUMN + ", " + USER_ENABLED_COLUMN + ", " + USER_EMAIL_COLUMN + ", " + USER_DATE_OF_BIRTH_COLUMN + ", " + USER_PESEL_COLUMN + ")\n"
             + "VALUES(?, ?, ?, ?, true, ?, ?, ?)";
 
     private static final String SQL_UPDATE_USER_QUERY
-            = "UPDATE user SET " + USER_NAME_COLUMN + " = ?, " + USER_PASSWORD_COLUMN + " = ?,\n"
+            = "UPDATE " + USERS_TABLE + " SET " + USER_NAME_COLUMN + " = ?, " + USER_PASSWORD_COLUMN + " = ?,\n"
             + USER_FIRST_NAME_COLUMN + " = ?, " + USER_LAST_NAME_COLUMN + " = ?,\n"
             + USER_ENABLED_COLUMN + " = ?," + USER_EMAIL_COLUMN + " = ?,\n"
             + USER_DATE_OF_BIRTH_COLUMN + " = ?, " + USER_PESEL_COLUMN + " = ?\n"
