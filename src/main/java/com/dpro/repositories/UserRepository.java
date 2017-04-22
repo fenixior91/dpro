@@ -13,7 +13,7 @@ public interface UserRepository {
     static final String PESEL_COLUMN = "pesel";
 
     static final String SQL_INSERT_USER_QUERY
-            = "INSERT INTO user(" + USERNAME_COLUMN + ", " + PASSWORD_COLUMN + ", " + FIRST_NAME_COLUMN + ", " + LAST_NAME_COLUMN + ", " + ENABLED_COLUMN + ", " + EMAIL_COLUMN + ", " + DATE_OF_BIRTH_COLUMN + ", " + PESEL_COLUMN + "\n"
+            = "INSERT INTO user(" + USERNAME_COLUMN + ", " + PASSWORD_COLUMN + ", " + FIRST_NAME_COLUMN + ", " + LAST_NAME_COLUMN + ", " + ENABLED_COLUMN + ", " + EMAIL_COLUMN + ", " + DATE_OF_BIRTH_COLUMN + ", " + PESEL_COLUMN + ")\n"
             + "VALUES(?, ?, ?, ?, true, ?, ?, ?)";
 
     static final String SQL_UPDATE_USER_QUERY

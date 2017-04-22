@@ -23,8 +23,7 @@
 
                 <section class="content">
                     <div class="callout callout-info">
-                        <a href="<c:url value='/admin/subject/create'/>" class="btn btn-success">Dodaj Przedmiot</a>
-                        <a href="<c:url value='/admin/subject_type/create'/>" class="btn btn-success">Dodaj Typ Przedmiotu</a>
+                        <a href="<c:url value='/admin/subject/create'/>" class="btn btn-success">Dodaj</a>
                     </div>
 
                     <div class="row">
