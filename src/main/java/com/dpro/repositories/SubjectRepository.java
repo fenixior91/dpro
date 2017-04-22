@@ -3,15 +3,7 @@ package com.dpro.repositories;
 import com.dpro.domains.Subject;
 import java.util.List;
 
-public interface SubjectRepository extends UserRepository {
-
-    static final String SUBJECT_ID_COLUMN = "subject_id";
-    static final String NAME_COLUMN = "subject_name";
-    static final String ECTS_COLUMN = "ects";
-    static final String HOURS_COLUMN = "hours";
-    static final String SUBJECT_TYPE_ID_COLUMN = "subject_type_id";
-    static final String SUBJECT_TYPE_NAME_COLUMN = "subject_type_name";
-    static final String USER_ID = "user_id";
+public interface SubjectRepository {
 
     Subject findById(Long id);
 

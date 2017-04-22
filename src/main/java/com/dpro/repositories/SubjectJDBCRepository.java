@@ -12,6 +12,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import static com.dpro.utils.DatabaseColumns.*;
+
 @Repository
 public class SubjectJDBCRepository implements SubjectRepository {
 
@@ -27,34 +29,34 @@ public class SubjectJDBCRepository implements SubjectRepository {
             + " WHERE s." + SUBJECT_TYPE_ID_COLUMN + " = ?";
 
     private static final String SQL_INSERT_QUERY
-            = "INSERT INTO subject(" + NAME_COLUMN + ", " + ECTS_COLUMN + ", " + HOURS_COLUMN + ", " + SUBJECT_TYPE_ID_COLUMN + ")\n"
+            = "INSERT INTO subject(" + SUBJECT_NAME_COLUMN + ", " + SUBJECT_ECTS_COLUMN + ", " + SUBJECT_HOURS_COLUMN + ", " + SUBJECT_TYPE_ID_COLUMN + ")\n"
             + "VALUES(?, ?, ?, ?)";
 
     private static final String SQL_UPDATE_QUERY
             = "UPDATE subject\n"
-            + "SET " + NAME_COLUMN + " = ?, " + ECTS_COLUMN + " = ?, " + HOURS_COLUMN + " = ?, " + SUBJECT_TYPE_ID_COLUMN + " = ?\n"
+            + "SET " + SUBJECT_NAME_COLUMN + " = ?, " + SUBJECT_ECTS_COLUMN + " = ?, " + SUBJECT_HOURS_COLUMN + " = ?, " + SUBJECT_TYPE_ID_COLUMN + " = ?\n"
             + "WHERE " + SUBJECT_ID_COLUMN + " = ?\n";
 
     private static final String SQL_FIND_ALL_IN_USER_QUERY
-            = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + NAME_COLUMN + ", s." + ECTS_COLUMN + ", s." + HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st." + SUBJECT_TYPE_NAME_COLUMN + "\n"
+            = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + SUBJECT_NAME_COLUMN + ", s." + SUBJECT_ECTS_COLUMN + ", s." + SUBJECT_HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st." + SUBJECT_TYPE_NAME_COLUMN + "\n"
             + "FROM user u\n"
-            + "INNER JOIN user_subject us ON u." + USER_ID + " = us." + USER_ID + " AND us." + USER_ID + " = ?\n"
+            + "INNER JOIN user_subject us ON u." + USER_ID_COLUMN + " = us." + USER_ID_COLUMN + " AND us." + USER_ID_COLUMN + " = ?\n"
             + "INNER JOIN subject s ON s." + SUBJECT_ID_COLUMN + " = us." + SUBJECT_ID_COLUMN + "\n"
             + "INNER JOIN subject_type st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN;
 
     private static final String SQL_FIND_ALL_NOT_IN_USER_QUERY
-            = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + NAME_COLUMN + ", s." + ECTS_COLUMN + ", s." + HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st. " + SUBJECT_TYPE_NAME_COLUMN + "\n"
+            = "SELECT s." + SUBJECT_ID_COLUMN + ", s." + SUBJECT_NAME_COLUMN + ", s." + SUBJECT_ECTS_COLUMN + ", s." + SUBJECT_HOURS_COLUMN + ", st." + SUBJECT_TYPE_ID_COLUMN + ", st. " + SUBJECT_TYPE_NAME_COLUMN + "\n"
             + "FROM subject s\n"
             + "INNER JOIN subject_type st ON st." + SUBJECT_TYPE_ID_COLUMN + " = s." + SUBJECT_TYPE_ID_COLUMN + "\n"
             + "WHERE s." + SUBJECT_ID_COLUMN + " NOT IN\n"
-            + "(SELECT us." + SUBJECT_ID_COLUMN + " FROM user_subject us WHERE us." + USER_ID + " = ?)";
+            + "(SELECT us." + SUBJECT_ID_COLUMN + " FROM user_subject us WHERE us." + USER_ID_COLUMN + " = ?)";
 
     private static final String SQL_DETACH_SUBJECTS_IN_USER_QUERY
             = "DELETE FROM user_subject\n"
-            + "WHERE " + USER_ID + " = ?";
+            + "WHERE " + USER_ID_COLUMN + " = ?";
 
     private static final String SQL_ATTACH_SUBJECT_IN_USER_QUERY
-            = "INSERT INTO user_subject(" + USER_ID + ", " + SUBJECT_ID_COLUMN + ")\n"
+            = "INSERT INTO user_subject(" + USER_ID_COLUMN + ", " + SUBJECT_ID_COLUMN + ")\n"
             + "VALUES(?, ?)";
 
     public SubjectJDBCRepository(DataSource dataSource) {
@@ -172,9 +174,9 @@ public class SubjectJDBCRepository implements SubjectRepository {
     private static Subject generate(ResultSet rs) throws SQLException {
         Subject subject = new Subject();
         subject.setId(rs.getLong(SUBJECT_ID_COLUMN));
-        subject.setName(rs.getString(NAME_COLUMN));
-        subject.setEcts(rs.getInt(ECTS_COLUMN));
-        subject.setHours(rs.getInt(HOURS_COLUMN));
+        subject.setName(rs.getString(SUBJECT_NAME_COLUMN));
+        subject.setEcts(rs.getInt(SUBJECT_ECTS_COLUMN));
+        subject.setHours(rs.getInt(SUBJECT_HOURS_COLUMN));
 
         SubjectType subjectType = new SubjectType();
         subjectType.setId(rs.getLong(SUBJECT_TYPE_ID_COLUMN));

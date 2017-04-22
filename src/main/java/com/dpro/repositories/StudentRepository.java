@@ -4,11 +4,7 @@ import com.dpro.domains.Student;
 
 import java.util.List;
 
-public interface StudentRepository extends UserRepository {
-
-    public static final String ID_COLUMN = "student_id";
-    public static final String ALBUM_COLUMN = "album";
-    public static final String ROLE = "ROLE_STUDENT";
+public interface StudentRepository {
 
     Student findById(Long id);
 

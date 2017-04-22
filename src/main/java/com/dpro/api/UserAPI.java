@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Kontroler restowy, do asynchronicznego manipulowania danymi użytkownika
  *
- * @author fenix
+ * @author Tomasz Truszkowski
  */
 @RestController
 @RequestMapping(value = "/api")

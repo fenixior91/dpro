@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Kontroler restowy, do asynchronicznego manipulowania danymi wykładowców
+ * Kontroler restowy, do asynchronicznego manipulowania danymi studentów
  *
  * @author Tomasz Truszkowski
  */
@@ -29,9 +29,9 @@ public class StudentAPI {
     SubjectService subjectService;
 
     /**
-     * Lista wykadowców w formacie JSON.
+     * Lista studentów w formacie JSON.
      *
-     * @return lista wykadowców w formacie JSON
+     * @return lista studentów w formacie JSON
      */
     @GetMapping("/student/list")
     public List<Student> getStudents() {
@@ -39,11 +39,11 @@ public class StudentAPI {
     }
 
     /**
-     * Jeżeli pobieranie się powiedzie zostanie zwrócony obiekt wykładowcy w
+     * Jeżeli pobieranie się powiedzie zostanie zwrócony obiekt studenta w
      * formacie JSON i status OK, w przeciwnym wypadku status NOT_FOUND.
      *
-     * @param id identyfikator wykładowcy
-     * @return obiekt wykładowcy w formacie JSON
+     * @param id identyfikator studenta
+     * @return obiekt studenta w formacie JSON
      */
     @GetMapping("/student/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {

@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import static com.dpro.utils.DatabaseColumns.*;
+
 @Repository
 public class SubjectTypeJDBCRepository implements SubjectTypeRepository {
 
