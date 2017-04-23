@@ -13,6 +13,8 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import static com.dpro.utils.Roles.*;
+
 /**
  * Jakie ma zostać wykonane żądanie po pomyślym zalogowaniu się do systemu.
  *
@@ -52,15 +54,15 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private boolean isAdmin(List<String> roles) {
-        return roles.contains("ROLE_ADMIN");
+        return roles.contains(ADMIN_ROLE);
     }
 
     private boolean isInstructor(List<String> roles) {
-        return roles.contains("ROLE_INSTRUCTOR");
+        return roles.contains(INSTRUCTOR_ROLE);
     }
 
     private boolean isStudent(List<String> roles) {
-        return roles.contains("ROLE_STUDENT");
+        return roles.contains(STUDENT_ROLE);
     }
 
     public void setRedirectStrategy(RedirectStrategy redirectStrategy) {

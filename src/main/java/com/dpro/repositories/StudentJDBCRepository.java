@@ -14,6 +14,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 import static com.dpro.utils.DatabaseColumns.*;
 import static com.dpro.utils.DatabaseTables.*;
+import static com.dpro.utils.Roles.*;
+
 
 @Repository
 public class StudentJDBCRepository implements StudentRepository {
